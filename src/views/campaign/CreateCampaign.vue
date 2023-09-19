@@ -1,15 +1,12 @@
-<script setup>
-import CampaignForm from "../../components/campaign/CampaignForm.vue";
-import PlayerList from "../../components/player/PlayerList.vue";
-</script>
+<script setup></script>
 
 <template>
-    <div>
-        <h1>Créer une Campagne</h1>
-        <CampaignForm />
-    </div>
+  <router-view v-slot="{ Component }">
+    <transition name="slide">
+      <component :is="Component" />
+    </transition>
+  </router-view>
 </template>
-  
+
 <style>
-/* Styles spécifiques à la page de création */
 </style>

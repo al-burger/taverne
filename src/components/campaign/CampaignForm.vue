@@ -1,54 +1,68 @@
-
 <script setup>
-import { ref } from 'vue';
-import CampaignGameSelector from './CampaignGameSelector.vue';
-import PlayerList from '../player/PlayerList.vue';
+import { ref } from "vue";
+import CampaignGameSelector from "./CampaignGameSelector.vue";
+import PlayerList from "../player/PlayerList.vue";
+import { useRouter } from "vue-router";
 
-const campaignName = ref('');
-const players = ref('');
-const games = ['Donjon & Dragon', 'Cthulhu'];
+const campaignName = ref("");
+const players = ref([]);
+const games = ["Donjon & Dragon", "Cthulhu"];
 const selectedGame = ref(null);
+const router = useRouter();
 
 function updateGame(newSelectedGame) {
-    selectedGame.value = newSelectedGame;
+  selectedGame.value = newSelectedGame;
 }
 
 function createCampaign() {
-  console.log('Campagne créée :', campaignName.value);
-  console.log('Joueurs :', players.value);
-  console.log('Jeu sélectionné :', selectedGame.value);
+  console.log("Campagne créée :", campaignName.value);
+  console.log("Joueurs :", players.value);
+  console.log("Jeu sélectionné :", selectedGame.value);
+  router.push({ name: "PlayerStats" });
 }
 </script>
 
 <template>
-  <div>
-    <form @submit.prevent="createCampaign" class="bg-white p-6 rounded shadow">
-      <div class="mb-4">
-        <label for="campaignName" class="block text-gray-600 text-sm font-medium mb-2">Nom de la campagne</label>
-        <input
-          v-model="campaignName"
-          type="text"
-          id="campaignName"
-          name="campaignName"
-          placeholder="Entrez le nom de la campagne"
-          class="border rounded w-full py-2 px-3 text-white focus:outline-none focus:border-blue-500"
-        />
-      </div>
+  <v-main class="wrapper d-flex align-center justify-center pt-0 grainy-background"
+    ><form @submit.prevent="createCampaign" class="rounded shadow bg-background elevation-4 pa-8">
+      <v-row class="mb-4">
+        <v-col cols="12">
+          <label for="campaignName" class="text--grey-600 text-h6 mb-2"
+            >Nom de la campagne</label
+          >
+          <v-text-field
+            v-model="campaignName"
+            label="Entrez le nom de la campagne"
+          ></v-text-field>
+        </v-col>
+      </v-row>
 
-      <div class="mb-4">
-        <PlayerList />
-      </div>
+      <v-row class="mb-4">
+        <v-col cols="12">
+          <label for="selectedGame" class="text--grey-600 text-h6 mb-2"
+            >Sélectionner le jeu</label
+          >
+          <CampaignGameSelector :games="games" @update:games="updateGame" />
+        </v-col>
+      </v-row>
 
-      <div class="mb-4">
-        <label for="selectedGame" class="block text-gray-600 text-sm font-medium mb-2">Sélectionner le jeu</label>
-        <CampaignGameSelector :games="games" @update:games="updateGame" />
-      </div>
+      <v-row class="mb-4">
+        <v-col cols="12">
+          <PlayerList />
+        </v-col>
+      </v-row>
 
-      <div class="mt-6">
-        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none">
-          Créer la campagne
-        </button>
-      </div>
+      <v-row>
+        <v-col cols="12">
+          <v-btn type="submit" color="primary">Créer les joueurs</v-btn>
+        </v-col>
+      </v-row>
     </form>
-  </div>
+  </v-main>
 </template>
+
+<style scoped>
+.wrapper {
+  background-color: #f2be75;
+}
+</style>
