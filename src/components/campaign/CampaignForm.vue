@@ -31,6 +31,7 @@ function createCampaign() {
             >Nom de la campagne</label
           >
           <v-text-field
+          id="campaignName"
             v-model="campaignName"
             label="Entrez le nom de la campagne"
           ></v-text-field>

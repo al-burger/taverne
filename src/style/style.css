@@ -31,3 +31,7 @@ main {
 main form {
   min-width: 40rem;
 };
+
+main a {
+  text-decoration: none;
+}

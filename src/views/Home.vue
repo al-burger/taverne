@@ -1,32 +1,40 @@
 <template>
-  <div class="home">
-    <h1 class="text-h3 font-weight-bold">Bienvenue dans la Taverne du Maître de Jeu</h1>
-    <v-row class="mt-8">
-      <v-col cols="6">
-        <v-card class="rounded-lg shadow-lg">
-          <v-img src="create-image.png" alt="Créer une campagne" class="w-16 h-16 mx-auto mb-4"></v-img>
-          <h2 class="text-h4 font-weight-bold text-center mb-2">Créer une campagne</h2>
-          <p class="text--grey-600 text-center">Commencez une nouvelle aventure.</p>
-          <router-link to="/create-campaign" class="mt-4">
-            <v-btn color="blue" dark>
-              Créer
-            </v-btn>
+  <v-main class="wrapper d-flex align-center text-center justify-center pt-0 grainy-background flex-column">
+    <div class="ma-auto">
+      <h1 class="text-h3 font-weight-bold">Bienvenue dans la Taverne du Maître de Jeu</h1>
+      <v-row class="mt-8">
+        <v-col cols="6">
+          <router-link to="/create-campaign">
+            <v-card class="rounded-lg shadow-lg d-flex align-center" style="background-color: #f2be75;">
+              <h2 class="text-h4 font-weight-bold text-center mb-2">Créer une campagne</h2>
+            </v-card>
           </router-link>
-        </v-card>
-      </v-col>
+        </v-col>
 
-      <v-col cols="6">
-        <v-card class="rounded-lg shadow-lg">
-          <v-img src="edit-image.png" alt="Reprendre une campagne" class="w-16 h-16 mx-auto mb-4"></v-img>
-          <h2 class="text-h4 font-weight-bold text-center mb-2">Reprendre une campagne</h2>
-          <p class="text--grey-600 text-center">Continuez une aventure en cours.</p>
-          <router-link to="/resume-campaign" class="mt-4">
-            <v-btn color="blue" dark>
-              Reprendre
-            </v-btn>
+        <v-col cols="6">
+          <router-link to="/resume-campaign">
+            <v-card class="rounded-lg shadow-lg d-flex align-center" style="background-color: #e16d64;">
+              <h2 class="text-h4 font-weight-bold text-center mb-2">Reprendre une campagne</h2>
+            </v-card>
           </router-link>
-        </v-card>
-      </v-col>
-    </v-row>
-  </div>
+        </v-col>
+      </v-row>
+    </div>
+
+  </v-main>
 </template>
+
+<style scoped>
+.v-card {
+  height:25rem;
+  text-align: center;
+}
+
+h2 {
+  margin: 0 auto ;
+}
+
+a {
+  text-decoration: none;
+}
+</style>
