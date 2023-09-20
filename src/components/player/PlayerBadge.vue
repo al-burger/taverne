@@ -8,7 +8,7 @@
       class="ma-2"
       color="dark"
     >
-      {{ player.name }}
+      {{ player }}
     </v-chip>
   </div>
 </template>

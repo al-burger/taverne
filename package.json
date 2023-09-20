@@ -10,6 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "axios": "^1.5.0",
     "flowbite": "^1.8.1",
     "happy-dom": "^6.0.4",
     "pinia": "^2.1.6",
@@ -25,6 +26,7 @@
     "@vue/test-utils": "^2.4.1",
     "jsdom": "^22.1.0",
     "resize-observer-polyfill": "^1.5.1",
+    "typescript": "^5.2.2",
     "vite": "^4.4.5",
     "vitest": "^0.34.4"
   }

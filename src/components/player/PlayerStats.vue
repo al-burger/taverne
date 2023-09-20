@@ -1,8 +1,18 @@
 <script setup>
+import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { usePlayerStore } from "../../store/modules/player";
 
 const router = useRouter();
-const players = [];
+const playerStore = usePlayerStore(); // Utilise le store
+
+// Appelle l'action pour récupérer les classes
+playerStore.fetchClasses();
+playerStore.fetchRaces();
+
+const players = computed(() => playerStore.players);
+const races = computed(() => playerStore.races);
+const classes = computed(() => playerStore.classes);
 
 function handleClick(event) {
   router.push({ name: event });
@@ -20,7 +30,7 @@ function handleClick(event) {
                   v-model="player.name"
                   :rules="nameRules"
                   :counter="10"
-                  label="First name"
+                  label="Name"
                   required
                   hide-details
                 ></v-text-field>
@@ -29,32 +39,34 @@ function handleClick(event) {
               <v-col cols="12" md="3">
                 <v-text-field
                   v-model="player.level"
-                  :rules="nameRules"
+                  type="number"
                   :counter="10"
-                  label="Last name"
+                  min="0"
+                  max="20"
+                  label="Level"
                   hide-details
                   required
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="3">
-                <v-text-field
+                <v-select
                   v-model="player.race"
-                  :rules="emailRules"
-                  label="E-mail"
-                  hide-details
-                  required
-                ></v-text-field>
+                  :items="races"
+                  label="Race"
+                  outlined
+                  @change="emitSelectedGame"
+                ></v-select>
               </v-col>
 
               <v-col cols="12" md="3">
-                <v-text-field
+                <v-select
                   v-model="player.class"
-                  :rules="emailRules"
-                  label="E-mail"
-                  hide-details
-                  required
-                ></v-text-field>
+                  :items="classes"
+                  label="Class"
+                  outlined
+                  @change="emitSelectedGame"
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>

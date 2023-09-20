@@ -29,24 +29,23 @@ import { ref, reactive } from "vue";
 import PlayerBadge from "./PlayerBadge.vue";
 
 const newPlayerName = ref("");
-const isEditing = ref(false);
 const players = reactive([]);
-const selectedPlayer = ref(null);
+const emit = defineEmits(['emitPlayers']);
+
+function emitPlayers() {
+  emit('emitPlayers', players);
+}
 
 function addPlayer() {
   if (newPlayerName.value.trim() !== "") {
-    players.push({ name: newPlayerName.value, race: "", level: "", class: "" });
+    players.push(newPlayerName.value);
     newPlayerName.value = "";
+    emitPlayers();
   }
 }
 
 function removePlayer(index) {
   players.splice(index, 1);
-}
-
-function editPlayer(index) {
-  selectedPlayer.value = players[index];
-  isEditing.value = true;
 }
 </script>
 
