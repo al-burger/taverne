@@ -1,4 +1,4 @@
-<script  lang="ts" setup>
+<script lang="ts" setup>
 import { ref } from "vue";
 import CampaignGameSelector from "./CampaignGameSelector.vue";
 import PlayerList from "../player/PlayerList.vue";
@@ -8,17 +8,18 @@ import { usePlayerStore } from "../../store/modules/player";
 const router = useRouter();
 const playerStore = usePlayerStore(); // Utilise le store
 
-const campaignName = ref("");
+const campaignName = ref<string>('');
 const players = ref<string[]>([]);
-const games = ["Donjon & Dragon", "Cthulhu"];
-const selectedGame = ref(null);
+const selectedGame = ref<string>('');
+const games = ref<string[]>(["Donjon & Dragon", "Cthulhu"]);
 
-function updateGame(newSelectedGame: object) {
+function updateGame(newSelectedGame: string) {
   selectedGame.value = newSelectedGame;
 }
 
 function createCampaign() {
   playerStore.createPlayers(players.value);
+  playerStore.createCampaignName(campaignName.value);
   router.push({ name: "PlayerStats" });
 }
 
@@ -36,7 +37,7 @@ function getPlayers(emitedPlayers: Array<string>) {
             >Nom de la campagne</label
           >
           <v-text-field
-          id="campaignName"
+            id="campaignName"
             v-model="campaignName"
             label="Entrez le nom de la campagne"
           ></v-text-field>
@@ -54,7 +55,7 @@ function getPlayers(emitedPlayers: Array<string>) {
 
       <v-row class="mb-4">
         <v-col cols="12">
-          <PlayerList @emitPlayers="getPlayers<String>" />
+          <PlayerList @emitPlayers="getPlayers" />
         </v-col>
       </v-row>
 

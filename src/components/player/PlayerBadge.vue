@@ -1,8 +1,14 @@
+<script setup lang="ts">
+const props = defineProps({
+  players: Array
+});
+</script>
+
 <template>
   <div>
     <!-- Liste des joueurs sous forme de chips closables -->
     <v-chip
-      v-for="(player, index) in players"
+      v-for="(player, index) in props.players"
       :key="index"
       closable
       class="ma-2"
@@ -12,9 +18,3 @@
     </v-chip>
   </div>
 </template>
-
-<script setup>
-import { defineProps } from "vue";
-
-const props = defineProps(["players"]);
-</script>

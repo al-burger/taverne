@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import PlayerBadge from "./PlayerBadge.vue";
+
+const newPlayerName = ref<string>("");
+const players = ref<string[]>([]);
+const emit = defineEmits(['emitPlayers']);
+
+function emitPlayers() {
+  emit('emitPlayers', players);
+}
+
+function addPlayer() {
+  if (newPlayerName.value.trim() !== "") {
+    players.value.push(newPlayerName.value);
+    newPlayerName.value = "";
+    emitPlayers();
+  }
+}
+</script>
+
 <template>
   <div>
     <label for="campaignName" class="text--grey-600 text-h6 mb-2"
@@ -17,37 +38,10 @@
     <v-row>
       <PlayerBadge
         :players="players"
-        @remove-player="removePlayer(index)"
-        @edit-player="editPlayer(index)"
       />
     </v-row>
   </div>
 </template>
-
-<script setup>
-import { ref, reactive } from "vue";
-import PlayerBadge from "./PlayerBadge.vue";
-
-const newPlayerName = ref("");
-const players = reactive([]);
-const emit = defineEmits(['emitPlayers']);
-
-function emitPlayers() {
-  emit('emitPlayers', players);
-}
-
-function addPlayer() {
-  if (newPlayerName.value.trim() !== "") {
-    players.push(newPlayerName.value);
-    newPlayerName.value = "";
-    emitPlayers();
-  }
-}
-
-function removePlayer(index) {
-  players.splice(index, 1);
-}
-</script>
 
 <style scoped>
 .drawer-fade-enter-active,

@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { usePlayerStore } from "../../store/modules/player";
+import { Player } from '../../types/appTypes';
 
 const router = useRouter();
 const playerStore = usePlayerStore(); // Utilise le store
@@ -10,25 +11,29 @@ const playerStore = usePlayerStore(); // Utilise le store
 playerStore.fetchClasses();
 playerStore.fetchRaces();
 
-const players = computed(() => playerStore.players);
-const races = computed(() => playerStore.races);
-const classes = computed(() => playerStore.classes);
+const players = computed<Player[]>(() => playerStore.players);
+const races = computed<string[]>(() => playerStore.races);
+const classes = computed<string[]>(() => playerStore.classes);
 
-function handleClick(event) {
+function handleClick(event: string) {
   router.push({ name: event });
+}
+
+function createCampaign() {
+  console.log('create');
 }
 </script>
 <template>
   <v-main class="wrapper d-flex align-center justify-center pt-0 grainy-background"
     ><form @submit.prevent="createCampaign" class="bg-background elevation-4 pa-8 rounded shadow">
       <template v-for="player in players" :key="player.name">
-        <v-form v-model="valid">
+        <v-form>
+          {{ playerStore.campaignName }}
           <v-container>
             <v-row>
               <v-col cols="12" md="3">
                 <v-text-field
                   v-model="player.name"
-                  :rules="nameRules"
                   :counter="10"
                   label="Name"
                   required
@@ -55,7 +60,6 @@ function handleClick(event) {
                   :items="races"
                   label="Race"
                   outlined
-                  @change="emitSelectedGame"
                 ></v-select>
               </v-col>
 
@@ -65,7 +69,6 @@ function handleClick(event) {
                   :items="classes"
                   label="Class"
                   outlined
-                  @change="emitSelectedGame"
                 ></v-select>
               </v-col>
             </v-row>
