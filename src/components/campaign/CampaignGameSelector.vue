@@ -1,25 +1,27 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { usePlayerStore } from "../../store/modules/player";
+
+const playerStore = usePlayerStore(); // Utilise le store
 
 const props = defineProps({
   games: Array
 });
-const selectedGame = ref(null);
-const emit = defineEmits(['update:games']);
+const game = ref(playerStore._game);
 
-function emitSelectedGame() {
-  emit('update:games', selectedGame.value);
+function setGame() {
+  playerStore.setGame(game.value);
 }
 </script>
 
 <template>
   <div>
     <v-select
-      v-model="selectedGame"
+      v-model="game"
       :items="props.games"
       label="Sélectionner le jeu"
       outlined
-      @change="emitSelectedGame"
+      @update:modelValue="setGame"
     ></v-select>
   </div>
 </template>

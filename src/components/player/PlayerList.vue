@@ -1,44 +1,40 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import PlayerBadge from "./PlayerBadge.vue";
+import { usePlayerStore } from "../../store/modules/player";
+const playerStore = usePlayerStore(); // Utilise le store
 
-const newPlayerName = ref<string>("");
-const players = ref<string[]>([]);
-const emit = defineEmits(['emitPlayers']);
-
-function emitPlayers() {
-  emit('emitPlayers', players);
-}
+const newPlayer = ref<string>("");
 
 function addPlayer() {
-  if (newPlayerName.value.trim() !== "") {
-    players.value.push(newPlayerName.value);
-    newPlayerName.value = "";
-    emitPlayers();
+  if (newPlayer.value.trim() !== "") {
+    playerStore.addPlayers(newPlayer.value);
+    newPlayer.value = "";
   }
 }
 </script>
 
 <template>
   <div>
-    <label for="campaignName" class="text--grey-600 text-h6 mb-2"
-      >Gestion des Joueurs</label
+    <!-- Formulaire pour ajouter un joueur --><label
+      for="playerField"
+      class="text--grey-600 text-h6 mb-2"
+      >Entrez vos joueurs</label
     >
-
-    <!-- Formulaire pour ajouter un joueur -->
     <div class="d-flex">
       <v-text-field
-        v-model="newPlayerName"
+        id="playerField"
+        v-model="newPlayer"
         label="Nom du joueur"
       ></v-text-field>
-      <v-btn @click.prevent="addPlayer" color="primary" class="mt-2 ml-2"> Ajouter </v-btn>
+      <v-btn @click.prevent="addPlayer" color="primary" class="mt-2 ml-2">
+        Ajouter
+      </v-btn>
     </div>
 
     <!-- Liste des joueurs sous forme de badges -->
     <v-row>
-      <PlayerBadge
-        :players="players"
-      />
+      <PlayerBadge />
     </v-row>
   </div>
 </template>

@@ -8,4 +8,5 @@ export interface Player {
 export interface Campaign {
   name: string;
   players: Player[];
+  game: string;
 }

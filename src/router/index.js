@@ -4,6 +4,8 @@ import CreateCampaign from '../views/campaign/createCampaign.vue';
 import EditCampaign from '../views/campaign/EditCampaign.vue';
 import CampaignForm from '../components/campaign/CampaignForm.vue';
 import PlayerStats from '../components/player/PlayerStats.vue';
+import CampaignEditor from '../components/campaign/CampaignEditor.vue';
+import CampaignList from '../components/campaign/CampaignList.vue';
 
 const routes = [
     {
@@ -28,12 +30,21 @@ const routes = [
             },
         ],
     },
-    
     {
         path: '/edit-campaign',
         name: 'EditCampaign',
         component: EditCampaign,
     },
+    {
+        path: '/campaign-list',
+        name: 'CampaignList',
+        component: CampaignList,
+    },
+    {
+        path: '/my-campaign?campaign=:campaignName',
+        name: 'MyCampaign',
+        component: CampaignEditor,
+    }
 ];
 
 const router = createRouter({
