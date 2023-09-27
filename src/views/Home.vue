@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import SvgIcon from "../components/common/Icon.vue";
+import { useAuthStore } from "../store/modules/auth";
+const loginStore = useAuthStore();
 </script>
 
 <template>
@@ -25,7 +26,7 @@ import SvgIcon from "../components/common/Icon.vue";
       </v-col>
 
       <v-col cols="6">
-        <router-link to="/campaign-list">
+        <router-link :to="loginStore.isUserLogged ? '/campaign-list' : '/login'">
           <v-card
             class="rounded-lg shadow-lg d-flex align-center flex-column"
             style="background-color: #e16d64"

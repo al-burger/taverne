@@ -6,6 +6,9 @@ import CampaignForm from '../components/campaign/CampaignForm.vue';
 import PlayerStats from '../components/player/PlayerStats.vue';
 import CampaignEditor from '../components/campaign/CampaignEditor.vue';
 import CampaignList from '../components/campaign/CampaignList.vue';
+import Login from '../components/login/Login.vue';
+import Register from '../components/login/Register.vue';
+import Dashboard from '../components/login/Dashboard.vue';
 
 const routes = [
     {
@@ -44,6 +47,21 @@ const routes = [
         path: '/my-campaign?campaign=:campaignName',
         name: 'MyCampaign',
         component: CampaignEditor,
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard
     }
 ];
 

@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { useAuthStore } from "./store/modules/auth";
+
+const loginStore = useAuthStore();
+
+function logOut() {
+  loginStore.logout();
+}
 </script>
 
 <template>
@@ -7,6 +14,9 @@
       <v-toolbar-title>
         <router-link to="/">Taverne</router-link>
       </v-toolbar-title>
+      <div>
+        <v-btn :disabled="!loginStore.isUserLogged" type="submit" color="primary" @click="logOut">Se déconnecter</v-btn>
+      </div>
     </v-app-bar>
     <v-main class="wrapper d-flex align-center text-center justify-center pt-0 bg-background flex-column">
       <router-view></router-view>

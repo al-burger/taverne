@@ -6,9 +6,7 @@
     </v-app-bar>
   </template>
   
-  <script lang="ts">
-  export default {
-    name: "Navbar",
-  };
+  <script lang="ts" setup>
+
   </script>
   

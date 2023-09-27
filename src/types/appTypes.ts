@@ -10,3 +10,10 @@ export interface Campaign {
   players: Player[];
   game: string;
 }
+
+export interface User {
+  displayName: string | null,
+  email: string | null,
+  uid: string | null,
+  isUserLogged: boolean,
+}

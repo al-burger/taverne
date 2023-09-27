@@ -75,7 +75,6 @@ export const usePlayerStore = defineStore("player", {
       const currentCampaign = this._allCampaigns.find(
         (campaign: Campaign) => campaign.name === name
       );
-      console.log(currentCampaign);
       this._campaign = currentCampaign || { name: "", players: [], game: "" };
     },
     async fetchClasses() {
