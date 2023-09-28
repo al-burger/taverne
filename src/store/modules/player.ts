@@ -2,53 +2,19 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { Player, Campaign } from "../../types/appTypes";
 import { getClasses } from "../../API/classes";
+import { getAuth } from "firebase/auth";
+import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../firebase";
 
 export const usePlayerStore = defineStore("player", {
   state: () => ({
-    _players: [] as Player[], 
+    _players: [] as Player[],
     _campaignName: "" as string,
     _classes: [] as string[],
     _races: [] as string[],
     _game: "" as string,
     _campaign: {} as Campaign,
-    _allCampaigns: [
-      {
-        name: "campaign de test",
-        game: "donjon & dragons",
-        players: [
-          {
-            name: "alex",
-            level: 1,
-            race: "string",
-            class: "string",
-          },
-          {
-            name: "pierre",
-            level: 1,
-            race: "string",
-            class: "string",
-          },
-        ],
-      },
-      {
-        name: "campaignTest",
-        game: "donjon & dragons",
-        players: [
-          {
-            name: "Player 1",
-            level: 1,
-            race: "string",
-            class: "string",
-          },
-          {
-            name: "Player 2",
-            level: 1,
-            race: "string",
-            class: "string",
-          },
-        ],
-      },
-    ] as Campaign[],
+    _allCampaigns: [] as Campaign[],
   }),
   actions: {
     createCampaignName(newCampaignName: string) {
@@ -64,18 +30,33 @@ export const usePlayerStore = defineStore("player", {
     setGame(game: string) {
       this._game = game;
     },
-    createCampaign(players: any) {
-      this._campaign = {
-        players: players,
-        name: this._campaignName,
-        game: this._game,
-      };
+    async createCampaign(players: any) {
+      // Supposez que user est l'utilisateur authentifié
+      const user = getAuth().currentUser;
+
+      if (user) {
+        // Récupérez l'ID utilisateur unique
+        const userId = user.uid;
+
+        // Add a new document with a generated id.
+        const docRef = await addDoc(collection(db, "campaigns"), {
+          players: players,
+          name: this._campaignName,
+          game: this._game,
+          uid: userId,
+        });
+        console.log("Document written with ID: ", docRef);
+      }
     },
-    getCampaignByName(name: string) {
-      const currentCampaign = this._allCampaigns.find(
-        (campaign: Campaign) => campaign.name === name
-      );
-      this._campaign = currentCampaign || { name: "", players: [], game: "" };
+    async getCampaignByUser() {
+      const user = getAuth().currentUser;
+      const q = query(collection(db, "campaigns"), where("uid", "==", user?.uid));
+      const querySnapshot = await getDocs(q);
+      this._allCampaigns = [];
+      querySnapshot.forEach((doc) => {
+        const campaign = doc.data() as Campaign;
+        this._allCampaigns.push(campaign);
+      });
     },
     async fetchClasses() {
       try {
@@ -103,6 +84,6 @@ export const usePlayerStore = defineStore("player", {
   getters: {
     campaignName: (state) => state._campaignName,
     players: (state) => state._players,
-    campaigns: (state) => state._allCampaigns
+    campaigns: (state) => state._allCampaigns,
   },
 });

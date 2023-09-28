@@ -10,7 +10,7 @@ const loginStore = useAuthStore();
     </h1>
     <v-row class="mt-8">
       <v-col cols="6">
-        <router-link to="/create-campaign">
+        <router-link :to="loginStore.isUserLogged ? '/create-campaign' : '/login'">
           <v-card
             class="rounded-lg shadow-lg d-flex align-center flex-column"
             style="background-color: #f2be75"

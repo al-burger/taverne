@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { usePlayerStore } from "../../store/modules/player";
 const router = useRouter();
@@ -7,6 +8,14 @@ const playerStore = usePlayerStore(); // Utilise le store
 function selectCampaign(campaignName: string) {
     router.push({ name: "MyCampaign", params: { campaignName }});
 }
+
+function getCampaignByUser() {
+  playerStore.getCampaignByUser();
+}
+
+onMounted(() => {
+  getCampaignByUser();
+});
 </script>
 <template>
   <v-card

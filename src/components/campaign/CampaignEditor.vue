@@ -2,18 +2,14 @@
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { usePlayerStore } from "../../store/modules/player";
-const playerStore = usePlayerStore(); // Utilise le store
-const router = useRouter();
+const playerStore = usePlayerStore();
 
-function getCampaignByName() {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const param = router.currentRoute._value.params.campaignName;
-  playerStore.getCampaignByName(param);
+function getCampaignByUser() {
+  playerStore.getCampaignByUser();
 }
 
 onMounted(() => {
-  getCampaignByName();
+  getCampaignByUser();
 });
 </script>
 <template>Votre campagne : {{ playerStore._campaign }}</template>
