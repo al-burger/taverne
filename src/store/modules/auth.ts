@@ -19,7 +19,7 @@ export const useAuthStore = defineStore('auth', {
         const { displayName, email, uid } = userCredential.user;
         this.user = { displayName, email, uid, isUserLogged: true };
       } catch (error) {
-        console.error(error);
+        throw(error);
       }
     },
     async login(loginEmail: string, password: string) {
@@ -28,7 +28,6 @@ export const useAuthStore = defineStore('auth', {
         const userCredential = await signInWithEmailAndPassword(auth, loginEmail, password)
         const { displayName, email, uid } = userCredential.user;
         this.user = { displayName, email, uid, isUserLogged: true };
-        console.log(this.user);
       } catch (error) {
         console.error(error)
       }

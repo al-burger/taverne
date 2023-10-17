@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePlayerStore } from "../../store/modules/player";
 import { Player } from "../../types/appTypes";
+import PlayerForm from "./PlayerForm.vue";
 
 const router = useRouter();
 const playerStore = usePlayerStore(); // Utilise le store
+
+const error = ref<string>('');
+const loader = ref<boolean>(false);
 
 // Appelle l'action pour récupérer les classes
 playerStore.fetchClasses();
@@ -19,9 +23,16 @@ function handleClick(event: string) {
   router.push({ name: event });
 }
 
-function createCampaign() {
-  playerStore.createCampaign(players.value);
-  router.push({ name: "MyCampaign"});
+async function createCampaign() {
+  loader.value = true;
+  try {
+    await playerStore.createCampaign(players.value);
+    loader.value = false;
+    router.push({ name: "MyCampaign" });
+  } catch(err: any) {
+    loader.value = false;
+    error.value = err.message;
+  }
 }
 </script>
 <template>
@@ -29,48 +40,21 @@ function createCampaign() {
     @submit.prevent="createCampaign"
     class="bg-white elevation-4 pa-8 rounded shadow"
   >
-    <template v-for="player in players" :key="player.name">
-      <v-row>
-        <v-col cols="12" md="3">
-          <v-text-field
-            v-model="player.name"
-            :counter="10"
-            label="Name"
-            required
-            hide-details
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="3">
-          <v-text-field
-            v-model="player.level"
-            type="number"
-            :counter="10"
-            min="0"
-            max="20"
-            label="Level"
-            hide-details
-            required
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="3">
-          <v-select
-            v-model="player.race"
-            :items="races"
-            label="Race"
-            outlined
-          ></v-select>
-        </v-col>
+  <v-overlay v-model="loader" contained class="align-center justify-center" persistent>
+      <v-progress-circular
+        indeterminate
+        color="primary"
+      ></v-progress-circular> </v-overlay
+    >
+    <PlayerForm
+      v-for="(player, index) in players"
+      :key="index"
+      v-model="players[index]"
+      :player="player"
+      :classes="classes"
+      :races="races"
+    ></PlayerForm>
 
-        <v-col cols="12" md="3">
-          <v-select
-            v-model="player.class"
-            :items="classes"
-            label="Class"
-            outlined
-          ></v-select>
-        </v-col>
-      </v-row>
-    </template>
     <v-row>
       <v-col cols="12">
         <v-btn

@@ -5,12 +5,17 @@ import { usePlayerStore } from "../../store/modules/player";
 const router = useRouter();
 const playerStore = usePlayerStore(); // Utilise le store
 
-function selectCampaign(campaignName: string) {
-    router.push({ name: "MyCampaign", params: { campaignName }});
+function selectCampaign(campaign: any) {
+  playerStore.setActiveCampaign(campaign);
+  router.push({ name: "MyCampaign" });
 }
 
 function getCampaignByUser() {
   playerStore.getCampaignByUser();
+}
+
+function handleRedirect() {
+  router.push({ name: "CreateCampaign" });
 }
 
 onMounted(() => {
@@ -19,8 +24,23 @@ onMounted(() => {
 </script>
 <template>
   <v-card
+    v-if="!playerStore.campaigns.length"
     class="mx-auto mb-4 p-8 text-center bg-card"
     width="800"
+  >
+    <v-card-item>
+      <div>
+        <p class="pb-2">Vous n'avez pas de campagne</p>
+        <v-btn class="ma-auto" @click="handleRedirect" color="primary">
+          Creer
+        </v-btn>
+      </div>
+    </v-card-item>
+  </v-card>
+  <v-card
+    class="mx-auto mb-4 p-8 text-center bg-card"
+    width="800"
+    v-else
     v-for="campaign in playerStore.campaigns"
   >
     <v-card-item>
@@ -37,7 +57,9 @@ onMounted(() => {
           </v-chip-group>
         </div>
       </div>
-      <v-btn class="ma-auto" @click="selectCampaign(campaign.name)" color="primary"> Reprendre </v-btn>
+      <v-btn class="ma-auto" @click="selectCampaign(campaign)" color="primary">
+        Reprendre
+      </v-btn>
     </v-card-item>
   </v-card>
 </template>

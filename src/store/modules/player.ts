@@ -3,7 +3,13 @@ import axios from "axios";
 import { Player, Campaign } from "../../types/appTypes";
 import { getClasses } from "../../API/classes";
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 
 export const usePlayerStore = defineStore("player", {
@@ -30,27 +36,26 @@ export const usePlayerStore = defineStore("player", {
     setGame(game: string) {
       this._game = game;
     },
+    setActiveCampaign(campaign: Campaign) {
+      this._campaign = campaign;
+    },
     async createCampaign(players: any) {
-      // Supposez que user est l'utilisateur authentifié
       const user = getAuth().currentUser;
-
-      if (user) {
-        // Récupérez l'ID utilisateur unique
-        const userId = user.uid;
-
-        // Add a new document with a generated id.
-        const docRef = await addDoc(collection(db, "campaigns"), {
-          players: players,
-          name: this._campaignName,
-          game: this._game,
-          uid: userId,
-        });
-        console.log("Document written with ID: ", docRef);
-      }
+      const userId = user?.uid;
+      await addDoc(collection(db, "campaigns"), {
+        players: players,
+        name: this._campaignName,
+        game: this._game,
+        uid: userId,
+      });
+      this.setActiveCampaign(this._campaign);
     },
     async getCampaignByUser() {
       const user = getAuth().currentUser;
-      const q = query(collection(db, "campaigns"), where("uid", "==", user?.uid));
+      const q = query(
+        collection(db, "campaigns"),
+        where("uid", "==", user?.uid)
+      );
       const querySnapshot = await getDocs(q);
       this._allCampaigns = [];
       querySnapshot.forEach((doc) => {

@@ -1,6 +1,15 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useAuthStore } from "../store/modules/auth";
+import { useRouter } from "vue-router";
 const loginStore = useAuthStore();
+const router = useRouter();
+
+onMounted(() => {
+  if (!loginStore.isUserLogged) {
+    router.push({ name: "Login"})
+  };
+})
 </script>
 
 <template>
@@ -10,7 +19,7 @@ const loginStore = useAuthStore();
     </h1>
     <v-row class="mt-8">
       <v-col cols="6">
-        <router-link :to="loginStore.isUserLogged ? '/create-campaign' : '/login'">
+        <router-link to="/create-campaign">
           <v-card
             class="rounded-lg shadow-lg d-flex align-center flex-column"
             style="background-color: #f2be75"
@@ -26,7 +35,7 @@ const loginStore = useAuthStore();
       </v-col>
 
       <v-col cols="6">
-        <router-link :to="loginStore.isUserLogged ? '/campaign-list' : '/login'">
+        <router-link to="/campaign-list">
           <v-card
             class="rounded-lg shadow-lg d-flex align-center flex-column"
             style="background-color: #e16d64"
