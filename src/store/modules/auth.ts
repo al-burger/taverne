@@ -51,5 +51,6 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     isUserLogged: (state) => state.user.isUserLogged,
     currentUser: (state) => state.user,
-  }
+  },
+  persist: true,
 })
