@@ -44,7 +44,7 @@ const routes = [
         component: CampaignList,
     },
     {
-        path: '/my-campaign?campaign=:campaignName',
+        path: '/my-campaign/:campaignName',
         name: 'MyCampaign',
         component: CampaignEditor,
     },

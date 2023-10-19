@@ -84,7 +84,6 @@ const register = async () => {
     loader.value = false;
     router.push({ name: "Home" });
   } catch (err) {
-    console.log(err);
     error.value = err.message;
     loader.value = false;
   }

@@ -1,4 +1,4 @@
-import {initializeApp} from "firebase/app";
+import { initializeApp } from "firebase/app";
 import "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 
@@ -11,9 +11,9 @@ const firebaseApp = {
   storageBucket: "taverne-af4e6.appspot.com",
   messagingSenderId: "409477337317",
   appId: "1:409477337317:web:37666a2b49239f4d7d440c",
+  storageBucket: "gs://taverne-af4e6.appspot.com"
 };
 
-const app = initializeApp(firebaseApp);
-
+export const app = initializeApp(firebaseApp);
 // Initialize Firestore and assign it to 'db'
 export const db = getFirestore(app);

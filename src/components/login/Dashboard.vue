@@ -40,8 +40,7 @@ export default {
     });
 
     const signOut = async () => {
-        authStore.logout();
-      router.push("/");
+      authStore.logout();
     };
 
     return { user, signOut };

@@ -10,6 +10,7 @@ export interface Campaign {
   players: Player[];
   game: string;
   uid: string;
+  imageURL: string;
 }
 
 export interface User {

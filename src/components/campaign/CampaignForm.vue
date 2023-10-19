@@ -10,19 +10,25 @@ const playerStore = usePlayerStore(); // Utilise le store
 
 const campaignName = ref<string>(playerStore._campaignName);
 const games = ref<string[]>(["Donjon & Dragon", "Cthulhu"]);
+const selectedFile = ref<string>('');
 const isCreateDisabled = computed(() => {
   return playerStore.players.length && campaignName && playerStore._game;
 });
 
-function createCampaignName() {
+function initCampaign() {
   playerStore.createCampaignName(campaignName.value);
+  playerStore.createCampaignPicture(selectedFile.value);
   router.push({ name: "PlayerStats" });
+}
+
+function handleFileChange(event: any) {
+  selectedFile.value = event.target.files[0];
 }
 </script>
 
 <template>
   <form
-    @submit.prevent="createCampaignName"
+    @submit.prevent="initCampaign"
     class="rounded shadow elevation-4 pa-8 bg-card"
   >
     <v-row class="mb-4">
@@ -50,6 +56,15 @@ function createCampaignName() {
     <v-row class="mb-4">
       <v-col cols="12">
         <PlayerList />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <label for="selectedGame" class="text--grey-600 text-h6 mb-2"
+          >Sélectionner l'image de couverture</label
+        >
+        <v-file-input label="File input" @change="handleFileChange" v-model="selectedFile"></v-file-input>
+        {{ selectedFile }}
       </v-col>
     </v-row>
     <v-row>

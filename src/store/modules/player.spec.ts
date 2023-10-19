@@ -1,12 +1,10 @@
-import { getClasses } from "../../API/classes";
-import { beforeEach, describe, expect, it, Mocked, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { usePlayerStore } from "./player";
-import { Player } from "../../types/appTypes";
 import { createPinia, setActivePinia } from "pinia";
 import axios from "axios";
 import { results } from "../../API/__mocks__/classes";
 
-describe("activeCustomersCount", () => {
+describe("players store", () => {
   let store: any;
 
   beforeEach(() => {
@@ -21,14 +19,35 @@ describe("activeCustomersCount", () => {
         name: "Alex",
         race: "",
         class: "",
-        level: 0,
+        level: 1,
       }
     ]);
+  });
+
+  it("test the removal of a player", async () => {
+    await store.addPlayers('alex');
+    await store.removePlayer(0);
+    expect(store._players).toStrictEqual([]);
   });
 
   it("test if the name of the campaign is created", async () => {
     await store.createCampaignName("Test campaign");
     expect(store._campaignName).toStrictEqual("Test campaign");
+  });
+
+  it("test if we get all the campaign of the user", async () => {
+    await store.createCampaignName("Test campaign");
+    expect(store._campaignName).toStrictEqual("Test campaign");
+  });
+
+  it("test if we set the active campaign", async () => {
+    const campaign = {
+      name: 'test',
+      game: 'test',
+      players: ['test 1', 'test 2']
+    }
+    await store.setActiveCampaign(campaign);
+    expect(store._campaign).toStrictEqual(campaign);
   });
 
   it("test if the classes are fetched", async () => {

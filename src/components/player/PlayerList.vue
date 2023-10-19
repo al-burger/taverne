@@ -31,7 +31,6 @@ function addPlayer() {
         Ajouter
       </v-btn>
     </div>
-
     <!-- Liste des joueurs sous forme de badges -->
     <v-row>
       <PlayerBadge />

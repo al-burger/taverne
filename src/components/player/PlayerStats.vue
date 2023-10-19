@@ -3,12 +3,13 @@ import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePlayerStore } from "../../store/modules/player";
 import { Player } from "../../types/appTypes";
-import PlayerForm from "./PlayerForm.vue";
+// @ts-ignore
+import PlayerForm from "./PlayerForm.vue"
 
 const router = useRouter();
 const playerStore = usePlayerStore(); // Utilise le store
 
-const error = ref<string>('');
+const error = ref<string>("");
 const loader = ref<boolean>(false);
 
 // Appelle l'action pour récupérer les classes
@@ -29,7 +30,7 @@ async function createCampaign() {
     await playerStore.createCampaign(players.value);
     loader.value = false;
     router.push({ name: "MyCampaign" });
-  } catch(err: any) {
+  } catch (err: any) {
     loader.value = false;
     error.value = err.message;
   }
@@ -40,12 +41,14 @@ async function createCampaign() {
     @submit.prevent="createCampaign"
     class="bg-white elevation-4 pa-8 rounded shadow"
   >
-  <v-overlay v-model="loader" contained class="align-center justify-center" persistent>
-      <v-progress-circular
-        indeterminate
-        color="primary"
-      ></v-progress-circular> </v-overlay
+    <v-overlay
+      v-model="loader"
+      contained
+      class="align-center justify-center"
+      persistent
     >
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </v-overlay>
     <PlayerForm
       v-for="(player, index) in players"
       :key="index"
@@ -54,7 +57,6 @@ async function createCampaign() {
       :classes="classes"
       :races="races"
     ></PlayerForm>
-
     <v-row>
       <v-col cols="12">
         <v-btn
@@ -66,9 +68,7 @@ async function createCampaign() {
         >
           Modifier ma campagne
         </v-btn>
-        <v-btn type="submit" color="primary">
-          Valider mes personnages
-        </v-btn>
+        <v-btn type="submit" color="primary"> Valider mes personnages </v-btn>
       </v-col>
     </v-row>
   </form>

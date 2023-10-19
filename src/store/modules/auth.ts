@@ -35,8 +35,7 @@ export const useAuthStore = defineStore('auth', {
     async logout() {
       try {
         const auth = getAuth()
-        const logout = await auth.signOut()
-        console.log(logout);
+        await auth.signOut()
         this.user = {
           displayName: '',
           email: '',
@@ -52,5 +51,5 @@ export const useAuthStore = defineStore('auth', {
     isUserLogged: (state) => state.user.isUserLogged,
     currentUser: (state) => state.user,
   },
-  persist: true,
+  // persist: true,
 })
