@@ -16,20 +16,20 @@ const loader = ref<boolean>(false);
 playerStore.fetchClasses();
 playerStore.fetchRaces();
 
-const players = computed<Player[]>(() => playerStore._players);
+const players = computed<Player[]>(() => playerStore._campaign.players);
 const races = computed<string[]>(() => playerStore._races);
 const classes = computed<string[]>(() => playerStore._classes);
 
-function handleClick(event: string) {
+const handleClick = (event: string) => {
   router.push({ name: event });
 }
 
 async function createCampaign() {
   loader.value = true;
   try {
-    await playerStore.createCampaign(players.value);
+    await playerStore.createCampaign();
     loader.value = false;
-    router.push({ name: "MyCampaign" });
+    router.push({name: "MyCampaign", params: { campaignName: playerStore._campaign.name}});
   } catch (err: any) {
     loader.value = false;
     error.value = err.message;

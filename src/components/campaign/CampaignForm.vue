@@ -8,16 +8,16 @@ import { usePlayerStore } from "../../store/modules/player";
 const router = useRouter();
 const playerStore = usePlayerStore(); // Utilise le store
 
-const campaignName = ref<string>(playerStore._campaignName);
+const campaignName = ref<string>(playerStore._campaign.name);
 const games = ref<string[]>(["Donjon & Dragon", "Cthulhu"]);
-const selectedFile = ref<string>('');
+const selectedFile = ref<File>();
 const isCreateDisabled = computed(() => {
-  return playerStore.players.length && campaignName && playerStore._game;
+  return playerStore._campaign.players?.length && campaignName && playerStore._campaign.game;
 });
 
 function initCampaign() {
-  playerStore.createCampaignName(campaignName.value);
-  playerStore.createCampaignPicture(selectedFile.value);
+  playerStore.setCampaignName(campaignName.value);
+  playerStore.setCampaignPicture(selectedFile.value);
   router.push({ name: "PlayerStats" });
 }
 

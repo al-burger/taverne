@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import axios from "axios";
 import { Player, Campaign } from "../../types/appTypes";
 import { getClasses } from "../../API/classes";
+import { getRaces } from "../../API/races";
 import { getAuth } from "firebase/auth";
 import {
   setDoc,
@@ -22,74 +22,77 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export const usePlayerStore = defineStore("player", {
   state: () => ({
-    _players: [] as Player[],
-    _campaignName: "" as string,
-    _campaignPicture: "" as string,
     _classes: [] as string[],
     _races: [] as string[],
-    _game: "" as string,
     _campaign: {} as Campaign,
-    _allCampaigns: [] as Campaign[],
+    _campaignsList: [] as Campaign[],
   }),
   actions: {
-    createCampaignName(newCampaignName: string) {
-      this._campaignName = newCampaignName;
+    setCampaignName(campaignName: string) {
+      this._campaign.name = campaignName;
     },
-    createCampaignPicture(campaignPicture: string) {
-      this._campaignPicture = campaignPicture;
-    },
-    addPlayers(player: string) {
-      const pl = { name: player, race: "", class: "", level: 1 };
-      this._players.push(pl);
-    },
-    removePlayer(index: number) {
-      this._players.splice(index, 1);
+    setCampaignPicture(campaignPicture: File) {
+      this._campaign.picture = campaignPicture;
     },
     setGame(game: string) {
-      this._game = game;
+      this._campaign.game = game;
     },
-    setActiveCampaign(campaign: Campaign) {
+    addPlayer(player: string) {
+      if (!this._campaign.players) this._campaign.players = []
+      this._campaign.players.push({
+        name: player,
+        race: "",
+        class: "",
+        level: 1,
+      } as Player);
+    },
+    removePlayer(index: number) {
+      this._campaign.players.splice(index, 1);
+    },
+    setCampaign(campaign: Campaign) {
       this._campaign = campaign;
     },
-    async createCampaign(players: any, imgURL: any) {
-      const user = getAuth().currentUser;
-      const userId = user?.uid;
-      const simplifiedName = this.simplifyString(this._campaignName);
-    
-      const campaignData = {
-        players: players,
-        name: this._campaignName,
-        game: this._game,
-        uid: userId,
-        imageURL: "",
-      } as Campaign;
-    
-      // Spécifiez le chemin vers le fichier image dans vos ressources statiques
-      const imagePath = '/src/assets/refuge.jpeg';
-    
-      // Lisez le contenu du fichier image
+    async createCampaign(): Promise<void> {
       try {
-        const response = await fetch(imagePath);
-        const imageBlob = await response.blob(); // Créez un Blob à partir du contenu du fichier
+        const user = getAuth().currentUser;
+        if (!user) {
+          throw new Error("L'utilisateur n'est pas connecté.");
+        }
+    
+        const userId = user.uid;
+        const simplifiedName = this.simplifyString(this._campaign.name);
+        const picture = this._campaign.picture;
+    
+        // Préparez les données de la campagne
+        const campaignData: Campaign = {
+          players: this._campaign.players,
+          name: this._campaign.name,
+          game: this._campaign.game,
+          uid: userId,
+          imageURL: '',
+        };
+    
+        // Définissez la référence de stockage
+        const storageRef = ref(storage, `campaign_images/${simplifiedName}.jpeg`);
     
         // Téléchargez le Blob dans Firebase Storage
-        const storageRef = ref(storage, `campaign_images/${simplifiedName}.jpeg`);
-        await uploadBytes(storageRef, imageBlob);
+        console.log(picture);
+        await uploadBytes(storageRef, picture as Blob);
+        
+        // Obtenez l'URL de téléchargement
+        campaignData.imageURL = await getDownloadURL(storageRef);
     
-        // Récupérez l'URL de téléchargement
-        const imageURL = await getDownloadURL(storageRef);
+        // Enregistrez les données de la campagne dans Firestore
+        const docRef = doc(db, "campaigns", simplifiedName);
+        await setDoc(docRef, campaignData);
     
-        campaignData.imageURL = imageURL; // Mettez à jour l'URL de l'image
-    
-        // Enregistrez les données de la campagne dans Firestore (avec l'URL de l'image si présente)
-        await setDoc(doc(db, "campaigns", simplifiedName), campaignData);
-    
-        this.setActiveCampaign(campaignData);
+        // Définissez la campagne active
+        this.setCampaign(campaignData);
       } catch (error) {
-        console.error('Erreur lors du téléchargement de l\'image:', error);
+        console.error('Erreur lors de la création de la campagne:', error);
       }
     },
-    async getCampaignByUser() {
+    async getCampaignByUser(): Promise<void> {
       try {
         const user = await getAuth().currentUser;
         const userId = user?.uid;
@@ -98,31 +101,31 @@ export const usePlayerStore = defineStore("player", {
           where("uid", "==", userId)
         );
         const querySnapshot = await getDocs(q);
-        this._allCampaigns = [];
+        this._campaignsList = [];
         querySnapshot.forEach((doc) => {
           const campaign = doc.data() as Campaign;
-          this._allCampaigns.push(campaign);
+          this._campaignsList.push(campaign);
         });
       } catch (err) {
         throw err;
       }
     },
-    async deleteCampaign(campaign: any) {
+    async deleteCampaign(campaign: any): Promise<void> {
       try {
         const simplifiedName = this.simplifyString(campaign.name);
         await deleteDoc(doc(db, "campaigns", simplifiedName));
         // Supprimez également la campagne de la liste locale
-        const index = this._allCampaigns.findIndex(
+        const index = this._campaignsList.findIndex(
           (c) => c.uid === campaign.uid
         );
         if (index !== -1) {
-          this._allCampaigns.splice(index, 1);
+          this._campaignsList.splice(index, 1);
         }
       } catch (err) {
         console.error("Erreur lors de la suppression de la campagne : ", err);
       }
     },
-    async fetchClasses() {
+    async fetchClasses(): Promise<void> {
       try {
         const response = await getClasses();
         // Récupère les données des classes depuis la réponse
@@ -133,9 +136,9 @@ export const usePlayerStore = defineStore("player", {
         console.error("Erreur lors de la récupération des classes:", error);
       }
     },
-    async fetchRaces() {
+    async fetchRaces(): Promise<void> {
       try {
-        const response = await axios.get("https://www.dnd5eapi.co/api/races");
+        const response = await getRaces();
         // Récupère les données des classes depuis la réponse
         const races = response.data.results.map((item: any) => item.name);
         // Met à jour l'état du store avec les classes
@@ -152,8 +155,8 @@ export const usePlayerStore = defineStore("player", {
     },
   },
   getters: {
-    campaignName: (state) => state._campaignName,
-    players: (state) => state._players,
-    campaigns: (state) => state._allCampaigns,
+    campaignName: (state) => state._campaign.name,
+    players: (state) => state._campaign.players,
+    campaigns: (state) => state._campaignsList,
   },
 });

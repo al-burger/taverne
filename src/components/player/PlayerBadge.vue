@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { usePlayerStore } from "../../store/modules/player";
 
-const playerStore = usePlayerStore(); // Utilise le store
-const players = ref<any>(playerStore.players);
+const playerStore = usePlayerStore();
 
-function emitRemovePlayer(index: number) {
+const emitRemovePlayer = (index: number) => {
   playerStore.removePlayer(index);
 }
 </script>
@@ -13,7 +11,7 @@ function emitRemovePlayer(index: number) {
 <template>
   <div>
     <v-chip
-      v-for="(player, index) in players"
+      v-for="(player, index) in playerStore._campaign.players"
       :key="index"
       closable
       class="ma-2"

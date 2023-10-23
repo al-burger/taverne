@@ -7,9 +7,9 @@ const playerStore = usePlayerStore(); // Utilise le store
 const props = defineProps({
   games: Array
 });
-const game = ref(playerStore._game);
+const game = ref(playerStore._campaign.game);
 
-function setGame() {
+const setGame = () => {
   playerStore.setGame(game.value);
 }
 </script>

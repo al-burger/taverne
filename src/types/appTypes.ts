@@ -10,6 +10,7 @@ export interface Campaign {
   players: Player[];
   game: string;
   uid: string;
+  picture?: File | Blob;
   imageURL: string;
 }
 
@@ -18,4 +19,8 @@ export interface User {
   email: string | null,
   uid: string | null,
   isUserLogged: boolean,
+}
+
+export interface Scenario {
+  name: string,
 }

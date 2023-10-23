@@ -49,6 +49,7 @@
           <v-text-field
             id="password"
             v-model="password"
+            autocomplete
             required
             type="password"
           ></v-text-field>

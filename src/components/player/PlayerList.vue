@@ -8,7 +8,7 @@ const newPlayer = ref<string>("");
 
 function addPlayer() {
   if (newPlayer.value.trim() !== "") {
-    playerStore.addPlayers(newPlayer.value);
+    playerStore.addPlayer(newPlayer.value);
     newPlayer.value = "";
   }
 }

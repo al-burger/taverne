@@ -46,7 +46,7 @@ describe("players store", () => {
       game: 'test',
       players: ['test 1', 'test 2']
     }
-    await store.setActiveCampaign(campaign);
+    await store.setCampaign(campaign);
     expect(store._campaign).toStrictEqual(campaign);
   });
 

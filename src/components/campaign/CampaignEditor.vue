@@ -1,14 +1,27 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { usePlayerStore } from "../../store/modules/player";
+import { useScenarioStore } from "../../store/modules/scenario";
+import ScenarioPreview from "../scenario/ScenarioPreview.vue";
+import PlayerLayer from "../player/PlayerLayer.vue";
+
 const playerStore = usePlayerStore();
+const scenarioStore = useScenarioStore();
+const player = ref<any>({});
+const isActive = ref<boolean>(false);
+
+const editPlayer = (playerToEdit: any) => {
+  player.value = playerToEdit;
+  isActive.value = true;
+}
+
+const closeLayer = () => {
+  isActive.value = false;
+};
 </script>
 <template>
-  <v-card class="mx-auto my-12" max-width="374">
-    <v-img
-      cover
-      height="250"
-      :src="playerStore._campaign.imageURL"
-    ></v-img>
+  <v-card class="mx-auto my-12 bg-card" max-width="500">
+    <v-img cover height="250" :src="playerStore._campaign.imageURL"></v-img>
     <v-card-item>
       <v-card-title>{{ playerStore._campaign.name }}</v-card-title>
       <v-card-subtitle>
@@ -17,7 +30,8 @@ const playerStore = usePlayerStore();
     </v-card-item>
     <v-card-text>
       <p>
-        Lorem ipsum dolor sit amet. Et accusamus dolorem sit necessitatibus beatae et consequatur suscipit ea iure assumenda.
+        Lorem ipsum dolor sit amet. Et accusamus dolorem sit necessitatibus
+        beatae et consequatur suscipit ea iure assumenda.
       </p>
     </v-card-text>
     <v-divider class="mx-4 mb-1"></v-divider>
@@ -29,12 +43,21 @@ const playerStore = usePlayerStore();
         closable
         class="ma-2"
         color="dark"
+        @click="editPlayer(player)"
       >
         {{ player.name }}
       </v-chip>
     </div>
-    <v-card-actions>
-      <v-btn color="deep-purple-lighten-2" variant="text"> Reserve </v-btn>
-    </v-card-actions>
+    <PlayerLayer
+      :player="player"
+      :isActive="isActive"
+      @close-layer="closeLayer"
+    />
+    <v-list class="bg-card">
+      <v-list-item v-for="scenario in scenarioStore._scenarios">
+        <ScenarioPreview :key="scenario.name" :scenario="scenario" />
+        <v-divider></v-divider>
+      </v-list-item>
+    </v-list>
   </v-card>
 </template>

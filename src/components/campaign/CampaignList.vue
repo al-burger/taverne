@@ -6,18 +6,18 @@ const router = useRouter();
 const playerStore = usePlayerStore(); // Utilise le store
 const loader = ref(true);
 
-function selectCampaign(campaign: any) {
-  playerStore.setActiveCampaign(campaign);
-  router.push({ name: 'MyCampaign', params: { campaignName: campaign.name} });
-}
+const selectCampaign = (campaign: any) => {
+  playerStore.setCampaign(campaign);
+  router.push({ name: "MyCampaign", params: { campaignName: campaign.name } });
+};
 
-async function getCampaignByUser() {
+const getCampaignByUser = async () => {
   await playerStore.getCampaignByUser();
-}
+};
 
-async function deleteCampaign(campaign: any) {
+const deleteCampaign = async (campaign: any) => {
   await playerStore.deleteCampaign(campaign);
-}
+};
 
 onMounted(() => {
   getCampaignByUser();
@@ -38,9 +38,7 @@ onMounted(() => {
         <div>
           <p class="pb-2">Vous n'avez pas de campagne</p>
           <router-link to="/create-campaign">
-            <v-btn class="ma-auto" color="primary">
-              Creer
-            </v-btn>
+            <v-btn class="ma-auto" color="primary"> Creer </v-btn>
           </router-link>
         </div>
       </v-card-item>
@@ -67,18 +65,18 @@ onMounted(() => {
         </div>
         <v-btn
           class="ma-auto"
-          @click="selectCampaign(campaign)"
-          color="primary"
-        >
-          Reprendre
-        </v-btn>
-        <v-btn
-          class="ma-auto"
           @click="deleteCampaign(campaign)"
           color="primary"
           variant="outlined"
         >
           Supprimer
+        </v-btn>
+        <v-btn
+          class="ma-auto"
+          @click="selectCampaign(campaign)"
+          color="primary"
+        >
+          Reprendre
         </v-btn>
       </v-card-item>
     </v-card>

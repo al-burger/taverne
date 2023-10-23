@@ -1,15 +1,28 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { useAuthStore } from "../store/modules/auth";
+import { usePlayerStore } from "../store/modules/player";
 import { useRouter } from "vue-router";
 const loginStore = useAuthStore();
 const router = useRouter();
+const playerStore = usePlayerStore();
+ 
+function resetCampaign() {
+  const resetedCampaign = {
+    name: "",
+    players: [],
+    game: "",
+    uid: "",
+    imageURL: "",
+  };
+  playerStore.setCampaign(resetedCampaign);
+}
 
 onMounted(() => {
   if (!loginStore.isUserLogged) {
-    router.push({ name: "Login"})
-  };
-})
+    router.push({ name: "Login" });
+  }
+});
 </script>
 
 <template>
@@ -23,6 +36,7 @@ onMounted(() => {
           <v-card
             class="rounded-lg shadow-lg d-flex align-center flex-column"
             style="background-color: #f2be75"
+            @click="resetCampaign"
           >
             <h2 class="text-h4 font-weight-bold text-center mb-2">
               Créer une campagne
