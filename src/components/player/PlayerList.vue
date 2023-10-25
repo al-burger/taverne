@@ -6,7 +6,7 @@ const playerStore = usePlayerStore(); // Utilise le store
 
 const newPlayer = ref<string>("");
 
-function addPlayer() {
+const addPlayer = () => {
   if (newPlayer.value.trim() !== "") {
     playerStore.addPlayer(newPlayer.value);
     newPlayer.value = "";

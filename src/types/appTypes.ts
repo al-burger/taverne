@@ -21,6 +21,14 @@ export interface User {
   isUserLogged: boolean,
 }
 
+export interface ScenarioStep {
+  name: string;
+  pnj: { name: string }[];
+  monsters: any[];
+  items: any[]
+}
+
 export interface Scenario {
-  name: string,
+  name: string;
+  steps: ScenarioStep[];
 }

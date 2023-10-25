@@ -20,7 +20,7 @@ const closeLayer = () => {
 };
 </script>
 <template>
-  <v-card class="mx-auto my-12 bg-card" max-width="500">
+  <v-card class="mx-auto my-12 bg-card" max-width="700">
     <v-img cover height="250" :src="playerStore._campaign.imageURL"></v-img>
     <v-card-item>
       <v-card-title>{{ playerStore._campaign.name }}</v-card-title>
