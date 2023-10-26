@@ -1,31 +1,28 @@
 <script setup lang="ts">
-import { PropType, ref } from "vue";
+import { ref } from "vue";
 import { useScenarioStore } from "../../../store/modules/scenario";
 
-const props = defineProps({
-  currentStep: {
-    type: Array as PropType<{ name: string }[]>,
-    required: true,
-  },
-});
 const scenarioStore = useScenarioStore();
 const autocompleteMonsters = ref<any[]>([]);
-const emit = defineEmits(["emitMonsters", "emitMonsterStats", "emitMonsterToRemove"]);
+const emit = defineEmits(["emitMonsterStats"]);
+
 const addMonsters = () => {
-  emit("emitMonsters", autocompleteMonsters.value);
+  scenarioStore.addMonsterToStep(autocompleteMonsters.value);
+  autocompleteMonsters.value = [];
 };
+
+const removeMonster = async (index: number) => {
+  scenarioStore.removeMonsterFromStep(index);
+};
+
 const getMonsterStats = async (monster: any) => {
   const monsterStats = await scenarioStore.fetchMonsterStats(monster);
   emit("emitMonsterStats", monsterStats);
 };
-const removeItem = async (index: number) => {
-  emit("emitMonsterToRemove", index);
-}
 </script>
 <template>
-  <div>
-    <div v-for="(item, index) in props.currentStep">
-      {{ item }} <v-button @click="getMonsterStats(item)">(?)</v-button><v-btn @click="removeItem(index)">(x)</v-btn>
+    <div v-for="(item, index) in scenarioStore.activeStep?.monsters" class="text-right">
+      {{ item }} <v-btn variant="outlined" @click="removeMonster(index)">Remove</v-btn><v-btn @click="getMonsterStats(item)">(?)</v-btn>
     </div>
     <v-autocomplete
       label="Select"
@@ -39,5 +36,4 @@ const removeItem = async (index: number) => {
         <v-btn @click="addMonsters">add</v-btn>
       </template>
     </v-autocomplete>
-  </div>
 </template>

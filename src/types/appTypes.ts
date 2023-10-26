@@ -21,14 +21,22 @@ export interface User {
   isUserLogged: boolean,
 }
 
-export interface ScenarioStep {
-  name: string;
-  pnj: { name: string }[];
-  monsters: any[];
-  items: any[]
-}
-
 export interface Scenario {
   name: string;
-  steps: ScenarioStep[];
+  steps: Step[];
 }
+
+export type Step = {
+  name: string;
+  pnj: Pnj[];
+  monsters: Monster[];
+  items: string[];
+};
+
+export type Pnj = {
+  name: string;
+};
+
+export type Monster = {
+  name: string;
+};

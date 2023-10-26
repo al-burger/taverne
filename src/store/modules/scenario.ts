@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Scenario } from "../../types/appTypes";
+import { Scenario, Step, Pnj, Monster } from "../../types/appTypes";
 import { getMonsters, getMonsterStats } from "../../API/monsters";
 import { getItems, getItemStats } from "../../API/items";
 
@@ -11,99 +11,79 @@ export const useScenarioStore = defineStore("scenario", {
         steps: [
           {
             name: "La Mine de Khazadur",
-            pnj: [{ name: "Thrain Barbe-de-Fer" }, { name: "Dernoc le Sage" }],
-            monsters: [],
-            items: [],
-          },
+            pnj: [{ name: "Thrain Barbe-de-Fer" }, { name: "Dernoc le Sage" }] as Pnj[],
+            monsters: [] as Monster[],
+            items: [] as string[],
+          } as Step,
           {
             name: "Les Secrets Enfouis",
-            pnj: [{ name: "Gralk le Colosse" }],
-            monsters: [],
-            items: [],
-          },
+            pnj: [{ name: "Gralk le Colosse" }] as Pnj[],
+            monsters: [] as Monster[],
+            items: [] as string[],
+          } as Step,
           {
             name: "La Pierre de la Malédiction",
-            pnj: [],
-            monsters: [],
-            items: [],
-          },
-        ],
+            pnj: [] as Pnj[],
+            monsters: [] as Monster[],
+            items: [] as string[],
+          } as Step,
+        ] as Step[],
       },
-      { name: "scenario 2" },
-      { name: "scenario 3" },
-      { name: "scenario 4" },
+      { name: "scenario 2" as string },
+      { name: "scenario 3" as string },
+      { name: "scenario 4" as string },
     ] as Scenario[],
     _scenarioToEdit: {} as Scenario,
     _monsters: [] as string[],
-    _monsterStats: {},
-    _items: [],
-    _activeStepIndex: -1, // Index de la step active
+    _monsterStats: {} as Record<string, any>,
+    _items: [] as string[],
+    _activeStepIndex: -1,
   }),
   actions: {
     setScenarioToEdit(scenario: Scenario) {
       this._scenarioToEdit = scenario;
     },
     addStep(step: string) {
-      const stepFormated = { name: step, pnj: [], monsters: [], items: [] };
+      const stepFormated: Step = { name: step, pnj: [], monsters: [], items: [] };
       this._scenarioToEdit.steps.push(stepFormated);
     },
     setActiveStep(index: number) {
       this._activeStepIndex = index;
     },
-    updateStep(stepIndex: any, updatedStep: any) {
+    updateStep(stepIndex: number, updatedStep: Step) {
       const scenarioToEdit = this._scenarioToEdit;
-      scenarioToEdit.steps[stepIndex] = updatedStep;
-    },
-    addPnjToStep(stepIndex: any, pnj: any) {
-      const scenarioToEdit = this._scenarioToEdit;
-
       if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
-        scenarioToEdit.steps[stepIndex].pnj.push(pnj);
+        scenarioToEdit.steps[stepIndex] = updatedStep;
       }
     },
-
-    // Ajouter un monstre à une étape du scénario actif
-    addMonsterToStep(stepIndex: any, monster: any) {
-      const scenarioToEdit = this._scenarioToEdit;
-
-      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
-        scenarioToEdit.steps[stepIndex].monsters.push(monster);
-      }
+    addPnjToStep(pnj: Pnj) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex]
+      currentStep.pnj.push(pnj);
     },
-
-    // Ajouter un objet à une étape du scénario actif
-    addItemToStep(stepIndex: any, item: any) {
-      const scenarioToEdit = this._scenarioToEdit;
-
-      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
-        scenarioToEdit.steps[stepIndex].items.push(item);
-      }
+    addMonsterToStep(monster: Monster[]) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex]
+      currentStep.monsters.push(...monster);
     },
-    removeItemFromStep(stepIndex: any, index: any) {
-      const scenarioToEdit = this._scenarioToEdit;
-
-      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
-        scenarioToEdit.steps[stepIndex].items.splice(index, 1);
-      }
+    addItemToStep(item: string[]) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex]
+      currentStep.items.push(...item);
     },
-    removeMonsterFromStep(stepIndex: any, index: any) {
-      const scenarioToEdit = this._scenarioToEdit;
-
-      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
-        scenarioToEdit.steps[stepIndex].monsters.splice(index, 1);
-      }
+    removeItemFromStep(index: number) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex]
+      currentStep.items.splice(index, 1);
     },
-    removeNpcFromStep(stepIndex: any, index: any) {
-      const scenarioToEdit = this._scenarioToEdit;
-
-      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
-        scenarioToEdit.steps[stepIndex].pnj.splice(index, 1);
-      }
+    removeMonsterFromStep(index: number) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex]
+      currentStep.monsters.splice(index, 1);
+    },
+    removeNpcFromStep(index: number) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex]
+      currentStep.pnj.splice(index, 1);
     },
     async fetchMonsters() {
       try {
         const response = await getMonsters();
-        this._monsters = response.data.results;
+        this._monsters = response.data.results as string[];
       } catch (error) {
         console.error("Erreur lors de la récupération des monstres:", error);
       }
@@ -119,7 +99,7 @@ export const useScenarioStore = defineStore("scenario", {
     async fetchItems() {
       try {
         const response = await getItems();
-        this._items = response.data.results;
+        this._items = response.data.results as string[];
       } catch (error) {
         console.error("Erreur lors de la récupération des monstres:", error);
       }
@@ -133,6 +113,8 @@ export const useScenarioStore = defineStore("scenario", {
       }
     },
   },
-  getters: {},
+  getters: {
+    activeStep: (state) => state._scenarioToEdit.steps[state._activeStepIndex]
+  },
   // persist: true,
 });

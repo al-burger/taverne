@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useScenarioStore } from "../../store/modules/scenario";
-  import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import {
   AddItems,
   AddPnj,
@@ -9,43 +9,16 @@ import {
 import ScenarioLayer from "../../components/scenario/ScenarioLayer.vue";
 
 const scenarioStore = useScenarioStore();
-const currentStep = ref<any>({});
 const isLayerOpened = ref<boolean>(false);
-const activeStepIndex = scenarioStore._activeStepIndex;
 const dataToDisplay = ref<any>({});
-  const emit = defineEmits(["emitStep"]);
-
-watch(
-  () => scenarioStore._activeStepIndex,
-  (newActiveStepIndex, oldActiveStepIndex) => {
-    if (newActiveStepIndex !== -1) {
-        currentStep.value = scenarioStore._scenarioToEdit.steps[newActiveStepIndex];
-    }
-  }
-);
+const emit = defineEmits(["emitStep"]);
 
 const addPnj = (pnj: any) => {
-  scenarioStore.addPnjToStep(activeStepIndex, pnj);
-};
-
-const addMonster = (monster: any) => {
-  scenarioStore.addMonsterToStep(activeStepIndex, monster);
-};
-
-const addItem = (item: any) => {
-  scenarioStore.addItemToStep(activeStepIndex, item);
-};
-
-const removeItem = (index: number) => {
-  scenarioStore.removeItemFromStep(activeStepIndex, index);
-};
-
-const removeMonster = (index: number) => {
-  scenarioStore.removeMonsterFromStep(activeStepIndex, index);
+  scenarioStore.addPnjToStep(pnj);
 };
 
 const removePnj = (index: number) => {
-  scenarioStore.removeNpcFromStep(activeStepIndex, index);
+  scenarioStore.removeNpcFromStep(index);
 };
 
 const openLayer = (data: any) => {
@@ -63,30 +36,21 @@ onMounted(() => {
 });
 </script>
 <template>
-  <v-main class="pl-0 mt-8">
-    <h3 class="pb-8">{{ currentStep.name }}</h3>
-    <AddMonsters
-      :currentStep="currentStep.monsters"
-      @emitMonsters="addMonster"
-      @emitMonsterStats="openLayer"
-      @emitMonsterToRemove="removeMonster"
-    />
-    <AddPnj
-      :currentStep="currentStep.pnj"
-      @emitPnj="addPnj"
-      @emitPnjStats="openLayer"
-      @emitPnjToRemove="removePnj"
-    />
-    <AddItems
-      :currentStep="currentStep.items"
-      @emitItems="addItem"
-      @emitItemStats="openLayer"
-      @emitItemToRemove="removeItem"
-    />
-    <ScenarioLayer
-      :isLayerOpened="isLayerOpened"
-      :data="dataToDisplay"
-      @closeLayer="closeLayer"
-    />
+  <v-main class="pl-0">
+    <v-card class="mx-auto my-12 px-8 bg-card" max-width="1000">
+      <h3 class="pb-8 pt-8">{{ scenarioStore.activeStep?.name }}</h3>
+      <AddMonsters @emitMonsterStats="openLayer" />
+      <AddPnj
+        @emitPnj="addPnj"
+        @emitPnjStats="openLayer"
+        @emitPnjToRemove="removePnj"
+      />
+      <AddItems @emitItemStats="openLayer" />
+      <ScenarioLayer
+        :isLayerOpened="isLayerOpened"
+        :data="dataToDisplay"
+        @closeLayer="closeLayer"
+      />
+    </v-card>
   </v-main>
 </template>
