@@ -10,7 +10,7 @@ const props = defineProps({
 });
 const scenarioStore = useScenarioStore();
 const autocompleteItems = ref<string[]>([]);
-const emit = defineEmits(["emitItems", "emitItemStats"]);
+const emit = defineEmits(["emitItems", "emitItemStats", "emitItemToRemove"]);
 const fetchItemStats = async (item: string) => {
   const itemStats = await scenarioStore.fetchItemStats(item);
   emit("emitItemStats", itemStats);
@@ -19,12 +19,15 @@ const fetchItemStats = async (item: string) => {
 const addItems = () => {
   emit("emitItems", autocompleteItems.value);
 };
+const removeItem = async (index: number) => {
+  emit("emitItemToRemove", index);
+}
 </script>
 
 <template>
   <div>
-    <div v-for="item in props.currentStep">
-      {{ item }} <button @click="fetchItemStats(item)">(?)</button>
+    <div v-for="(item, index) in props.currentStep">
+      {{ item }} <v-btn @click="fetchItemStats(item)">(?)</v-btn><v-btn @click="removeItem(index)">(x)</v-btn>
     </div>
     <v-autocomplete
       label="Select"

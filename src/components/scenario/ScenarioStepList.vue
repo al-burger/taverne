@@ -4,7 +4,6 @@ import { onMounted, ref } from "vue";
 
 const scenarioStore = useScenarioStore();
 const emit = defineEmits(["emitCurrentStep"]);
-const currentStep = ref<any>({});
 const stepToAdd = ref<string>("");
 
 const selectStep = (index: number) => {

@@ -54,6 +54,52 @@ export const useScenarioStore = defineStore("scenario", {
       const scenarioToEdit = this._scenarioToEdit;
       scenarioToEdit.steps[stepIndex] = updatedStep;
     },
+    addPnjToStep(stepIndex: any, pnj: any) {
+      const scenarioToEdit = this._scenarioToEdit;
+
+      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
+        scenarioToEdit.steps[stepIndex].pnj.push(pnj);
+      }
+    },
+
+    // Ajouter un monstre à une étape du scénario actif
+    addMonsterToStep(stepIndex: any, monster: any) {
+      const scenarioToEdit = this._scenarioToEdit;
+
+      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
+        scenarioToEdit.steps[stepIndex].monsters.push(monster);
+      }
+    },
+
+    // Ajouter un objet à une étape du scénario actif
+    addItemToStep(stepIndex: any, item: any) {
+      const scenarioToEdit = this._scenarioToEdit;
+
+      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
+        scenarioToEdit.steps[stepIndex].items.push(item);
+      }
+    },
+    removeItemFromStep(stepIndex: any, index: any) {
+      const scenarioToEdit = this._scenarioToEdit;
+
+      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
+        scenarioToEdit.steps[stepIndex].items.splice(index, 1);
+      }
+    },
+    removeMonsterFromStep(stepIndex: any, index: any) {
+      const scenarioToEdit = this._scenarioToEdit;
+
+      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
+        scenarioToEdit.steps[stepIndex].monsters.splice(index, 1);
+      }
+    },
+    removeNpcFromStep(stepIndex: any, index: any) {
+      const scenarioToEdit = this._scenarioToEdit;
+
+      if (stepIndex >= 0 && stepIndex < scenarioToEdit.steps.length) {
+        scenarioToEdit.steps[stepIndex].pnj.splice(index, 1);
+      }
+    },
     async fetchMonsters() {
       try {
         const response = await getMonsters();
