@@ -35,7 +35,7 @@ const removeItem = async (index: number) => {
 <template>
   <div>
     <div v-for="(item, index) in props.currentStep">
-      {{ item.name }} <button @click="fetchPnjStats(item)">(?)</button><v-button @click="removeItem(index)"></v-button>
+      {{ item.name }} <v-btn  @click="fetchPnjStats(item)">(?)</v-btn ><v-btn @click="removeItem(index)">(x)</v-btn>
     </div>
     <v-text-field label="Select" v-model="inputPnj">
       <template v-slot:append>

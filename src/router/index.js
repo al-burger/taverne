@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
-import Scenario from '../views/scenario/EditScenario.vue';
+import Scenario from '../views/scenario/Scenario.vue';
 import CreateCampaign from '../views/campaign/createCampaign.vue';
 import EditCampaign from '../views/campaign/EditCampaign.vue';
 import CampaignForm from '../components/campaign/CampaignForm.vue';

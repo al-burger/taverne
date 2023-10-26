@@ -37,10 +37,22 @@ export const useScenarioStore = defineStore("scenario", {
     _monsters: [] as string[],
     _monsterStats: {},
     _items: [],
+    _activeStepIndex: -1, // Index de la step active
   }),
   actions: {
     setScenarioToEdit(scenario: Scenario) {
       this._scenarioToEdit = scenario;
+    },
+    addStep(step: string) {
+      const stepFormated = { name: step, pnj: [], monsters: [], items: [] };
+      this._scenarioToEdit.steps.push(stepFormated);
+    },
+    setActiveStep(index: number) {
+      this._activeStepIndex = index;
+    },
+    updateStep(stepIndex: any, updatedStep: any) {
+      const scenarioToEdit = this._scenarioToEdit;
+      scenarioToEdit.steps[stepIndex] = updatedStep;
     },
     async fetchMonsters() {
       try {

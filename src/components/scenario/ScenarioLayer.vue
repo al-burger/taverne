@@ -24,7 +24,7 @@ const closeLayer = () => {
 
 </script>
 <template>
-  <v-navigation-drawer width="500" v-model="drawerOpen" temporary right>
+  <v-navigation-drawer width="500" v-model="drawerOpen" temporary location="right">
     <v-card title="Dialog">
       <v-card-text> {{ data }} </v-card-text>
       <v-card-actions>
