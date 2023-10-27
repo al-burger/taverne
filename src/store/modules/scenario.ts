@@ -2,37 +2,11 @@ import { defineStore } from "pinia";
 import { Scenario, Step, Pnj, Monster } from "../../types/appTypes";
 import { getMonsters, getMonsterStats } from "../../API/monsters";
 import { getItems, getItemStats } from "../../API/items";
+import { usePlayerStore } from "./player";
 
 export const useScenarioStore = defineStore("scenario", {
   state: () => ({
-    _scenarios: [
-      {
-        name: "Enquête dans les profondeurs",
-        steps: [
-          {
-            name: "La Mine de Khazadur",
-            pnj: [{ name: "Thrain Barbe-de-Fer" }, { name: "Dernoc le Sage" }] as Pnj[],
-            monsters: [] as Monster[],
-            items: [] as string[],
-          } as Step,
-          {
-            name: "Les Secrets Enfouis",
-            pnj: [{ name: "Gralk le Colosse" }] as Pnj[],
-            monsters: [] as Monster[],
-            items: [] as string[],
-          } as Step,
-          {
-            name: "La Pierre de la Malédiction",
-            pnj: [] as Pnj[],
-            monsters: [] as Monster[],
-            items: [] as string[],
-          } as Step,
-        ] as Step[],
-      },
-      { name: "scenario 2" as string },
-      { name: "scenario 3" as string },
-      { name: "scenario 4" as string },
-    ] as Scenario[],
+    _scenarios: [] as Scenario[],
     _scenarioToEdit: {} as Scenario,
     _monsters: [] as string[],
     _monsterStats: {} as Record<string, any>,
@@ -40,6 +14,13 @@ export const useScenarioStore = defineStore("scenario", {
     _activeStepIndex: -1,
   }),
   actions: {
+    addScenario(scenario: Scenario) {
+      this._scenarios.push(scenario);
+    },
+    setScenarios() {
+      const playerStore = usePlayerStore();
+      this._scenarios = playerStore._campaign.scenarios
+    },
     setScenarioToEdit(scenario: Scenario) {
       this._scenarioToEdit = scenario;
     },
@@ -112,6 +93,9 @@ export const useScenarioStore = defineStore("scenario", {
         console.error("Erreur lors de la récupération des monstres:", error);
       }
     },
+    async editScenario() {
+      
+    }
   },
   getters: {
     activeStep: (state) => state._scenarioToEdit.steps[state._activeStepIndex]

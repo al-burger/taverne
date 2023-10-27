@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { usePlayerStore } from "../../store/modules/player";
 import { useScenarioStore } from "../../store/modules/scenario";
 import ScenarioPreview from "../scenario/ScenarioPreview.vue";
@@ -9,15 +9,25 @@ const playerStore = usePlayerStore();
 const scenarioStore = useScenarioStore();
 const player = ref<any>({});
 const isActive = ref<boolean>(false);
+const scenarioName = ref<string>("");
 
 const editPlayer = (playerToEdit: any) => {
   player.value = playerToEdit;
   isActive.value = true;
-}
+};
 
 const closeLayer = () => {
   isActive.value = false;
 };
+
+const addScenario = () => {
+  const scenarioToAdd = { name: scenarioName.value, steps: [] };
+  scenarioStore.addScenario(scenarioToAdd);
+  scenarioName.value = '';
+};
+onMounted(() => {
+  scenarioStore.setScenarios();
+});
 </script>
 <template>
   <v-card class="mx-auto my-12 bg-card" max-width="700">
@@ -57,6 +67,16 @@ const closeLayer = () => {
       <v-list-item v-for="scenario in scenarioStore._scenarios">
         <ScenarioPreview :key="scenario.name" :scenario="scenario" />
         <v-divider></v-divider>
+      </v-list-item>
+      <v-list-item>
+        <div>
+          <v-text-field
+            id="scenarioName"
+            v-model="scenarioName"
+            label="Entrez le nom du scenario"
+          ></v-text-field
+          ><v-btn @click="addScenario" :disabled="scenarioName.length == 0">Ajouter Scenario</v-btn>
+        </div>
       </v-list-item>
     </v-list>
   </v-card>

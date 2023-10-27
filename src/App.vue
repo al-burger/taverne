@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "./store/modules/auth";
 import { useRouter } from "vue-router";
+import CampaignSaveButton from "./components/campaign/CampaignSaveButton.vue"
 
 const loginStore = useAuthStore();
 const router = useRouter();
@@ -23,6 +24,7 @@ function logOut() {
     </v-app-bar>
     <v-main class="wrapper d-flex align-center text-center justify-center pt-0 bg-background flex-column">
       <router-view></router-view>
+      <CampaignSaveButton />
     </v-main>
   </v-layout>
 </template>
