@@ -12,6 +12,8 @@ export interface Campaign {
   uid: string;
   picture?: File | Blob;
   imageURL: string;
+  scenarios: Scenario [];
+  id: string;
 }
 
 export interface User {

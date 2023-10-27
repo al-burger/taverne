@@ -11,6 +11,8 @@ import {
   where,
   doc,
   deleteDoc,
+  addDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // @ts-ignore
@@ -51,6 +53,7 @@ export const usePlayerStore = defineStore("player", {
     },
     setCampaign(campaign: Campaign) {
       this._campaign = campaign;
+      console.log(campaign);
     },
     async createCampaign(): Promise<void> {
       try {
@@ -70,24 +73,30 @@ export const usePlayerStore = defineStore("player", {
           game: this._campaign.game,
           uid: userId,
           imageURL: '',
+          scenarios: [],
+          id: '',
         };
     
         // Définissez la référence de stockage
         const storageRef = ref(storage, `campaign_images/${simplifiedName}.jpeg`);
     
         // Téléchargez le Blob dans Firebase Storage
-        console.log(picture);
         await uploadBytes(storageRef, picture as Blob);
         
         // Obtenez l'URL de téléchargement
         campaignData.imageURL = await getDownloadURL(storageRef);
     
         // Enregistrez les données de la campagne dans Firestore
-        const docRef = doc(db, "campaigns", simplifiedName);
-        await setDoc(docRef, campaignData);
+        const docRef = collection(db, "campaigns");
+        const newDocRef = await addDoc(docRef, campaignData);
+        const docRefToUpdate = doc(db, 'campaigns', newDocRef.id);
+        const newData = {
+          id: newDocRef.id,
+        };
+        await updateDoc(docRefToUpdate, newData);
     
         // Définissez la campagne active
-        this.setCampaign(campaignData);
+        this.setCampaign({...campaignData, id: newDocRef.id});
       } catch (error) {
         console.error('Erreur lors de la création de la campagne:', error);
       }
@@ -145,6 +154,15 @@ export const usePlayerStore = defineStore("player", {
         this._races = races;
       } catch (error) {
         console.error("Erreur lors de la récupération des classes:", error);
+      }
+    },
+    async updateCampaign(): Promise<void> {
+      try {
+        const updatedCampaign = this._campaign;
+        const campaignRef = doc(db, "campaigns", updatedCampaign.id);
+        await setDoc(campaignRef, updatedCampaign)
+      } catch (err) {
+        console.error("Erreur lors de la mise à jour de la campagne : ", err);
       }
     },
     simplifyString(str: string) {
