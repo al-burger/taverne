@@ -1,51 +1,48 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, Mocked, vi } from "vitest";
 import { useAuthStore } from "./auth";
 import { createPinia, setActivePinia } from "pinia";
 
+const mockData = {
+  displayName: 'toto', email: 'toto', uid: 123, 
+}
 // Mock de Firebase Auth
-const createUserWithEmailAndPassword = vi.fn();
-const getAuth = vi.fn(() => ({
+const createUserWithEmailAndPassword = vi.fn(async () => {
+  return Promise.resolve({
+    user: mockData
+  })
+});
+const getAuthMock = vi.fn(() => ({
   createUserWithEmailAndPassword,
 }));
+const signInWithEmailAndPasswordMock = vi.fn(() => {
+  signInWithEmailAndPassword
+});
 
-vi.mock("./auth.ts", () => {
+vi.mock("firebase/auth", async () => {
+  const actual = await vi.importActual('firebase/auth')
   return {
-    createUserWithEmailAndPassword,
-    getAuth,
+    ...actual as any,
+    createUserWithEmailAndPassword: () => createUserWithEmailAndPassword(),
+    getAuth: () => getAuthMock(),
+    signInWithEmailAndPassword:() => signInWithEmailAndPasswordMock(),
   };
 });
 
 describe("auth store", () => {
   let store: any;
-
   beforeEach(() => {
     setActivePinia(createPinia());
     store = useAuthStore();
   });
-
-  it("Devrait inscrire un utilisateur avec succès", async () => {
-    // Mockez la réponse createUserWithEmailAndPassword
-    const userCredential = {
-      user: {
-        displayName: "John Doe",
-        email: "john@example.com",
-        uid: "test-uid",
-      },
-    };
-    createUserWithEmailAndPassword.mockResolvedValue(userCredential);
-
-    // Appelez la fonction à tester
-    const result = await store.register("john@example.com", "password123");
-
-    // Vérifiez les appels de fonctions Firebase Auth
-    expect(getAuth).toHaveBeenCalledTimes(1);
-    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
-      getAuth(),
-      "john@example.com",
-      "password123"
-    );
-
-    // Vérifiez les résultats de la fonction
-    expect(result).toEqual(userCredential);
-  });
+  it('L utilisateur se créée un compte', async() => {
+    await store.register('toto', '1234');
+    expect(store.user).toEqual({...mockData, isUserLogged: true});
+  })
+  it('L utilisateur rencontre une erreur', async() => {
+    (getAuthMock as Mocked<any>).mockImplementation(() => Promise.reject());
+  })
+  it('L utilisateur se connecte', async() => {
+    await store.login('toto', '1234');
+    expect(store.user).toEqual({...mockData, isUserLogged: true});
+  })
 });
