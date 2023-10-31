@@ -28,6 +28,7 @@ export const usePlayerStore = defineStore("player", {
     _races: [] as string[],
     _campaign: {} as Campaign,
     _campaignsList: [] as Campaign[],
+    _isLoading: false as boolean,
   }),
   actions: {
     setCampaignName(campaignName: string) {
@@ -53,7 +54,6 @@ export const usePlayerStore = defineStore("player", {
     },
     setCampaign(campaign: Campaign) {
       this._campaign = campaign;
-      console.log(campaign);
     },
     async createCampaign(): Promise<void> {
       try {
@@ -157,12 +157,15 @@ export const usePlayerStore = defineStore("player", {
       }
     },
     async updateCampaign(): Promise<void> {
+      this._isLoading = true;
       try {
         const updatedCampaign = this._campaign;
         const campaignRef = doc(db, "campaigns", updatedCampaign.id);
         await setDoc(campaignRef, updatedCampaign)
       } catch (err) {
         console.error("Erreur lors de la mise à jour de la campagne : ", err);
+      } finally {
+        this._isLoading = false;
       }
     },
     simplifyString(str: string) {

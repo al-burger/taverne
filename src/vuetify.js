@@ -9,11 +9,11 @@ import { aliases, mdi } from "vuetify/iconsets/mdi";
 const myCustomTheme = {
     dark: false,
     colors: {
-        background: "#d89a7f",
-        surface: "#4c241d",
-        primary: "#e16d64",
+        background: "#fae9d9",
+        surface: "#F8D5B5",
+        primary: "#D32430",
         "primary-darken-1": "#3700B3",
-        secondary: "#03DAC6",
+        secondary: "#582D30",
         "secondary-darken-1": "#018786",
         error: "#B00020",
         info: "#2196F3",

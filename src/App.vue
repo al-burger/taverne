@@ -14,7 +14,7 @@ function logOut() {
 
 <template>
   <v-layout class="rounded fill-height" fill-height>
-    <v-app-bar :color="'#f5f0e6'">
+    <v-app-bar :color="'#582D30'">
       <v-toolbar-title>
         <router-link to="/">Taverne</router-link>
       </v-toolbar-title>
@@ -24,7 +24,7 @@ function logOut() {
     </v-app-bar>
     <v-main class="wrapper d-flex align-center text-center justify-center pt-0 bg-background flex-column">
       <router-view></router-view>
-      <CampaignSaveButton />
+      <CampaignSaveButton v-if="loginStore.isUserLogged" />
     </v-main>
   </v-layout>
 </template>

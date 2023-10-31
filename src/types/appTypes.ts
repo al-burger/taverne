@@ -37,6 +37,7 @@ export type Step = {
 
 export type Pnj = {
   name: string;
+  title: string;
 };
 
 export type Monster = {
