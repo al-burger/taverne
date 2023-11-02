@@ -30,12 +30,12 @@ export interface Scenario {
 
 export type Step = {
   name: string;
-  pnj: Pnj[];
+  npc: Npc[];
   monsters: Monster[];
   items: string[];
 };
 
-export type Pnj = {
+export type Npc = {
   name: string;
   title: string;
 };

@@ -19,7 +19,7 @@ const myCustomTheme = {
         info: "#2196F3",
         success: "#4CAF50",
         warning: "#FB8C00",
-        card: "#ffeacf"
+        card: "#ffeacf",
     },
     // Définissez la police Poppins comme police par défaut
     defaultFont: "Poppins, sans-serif",

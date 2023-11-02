@@ -1,26 +1,25 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useScenarioStore } from "../../../store/modules/scenario";
-import { AddItems } from "../itemSelect";
+import AddNpc from "../itemSelect/AddNpc.vue";
 const scenarioStore = useScenarioStore();
-
-const removeItem = async (index: number) => {
-  scenarioStore.removeItemFromStep(index);
+const isAddEnabled = ref<boolean>(false);
+const panel = ref<number[]>([0]);
+const removeNpc = (index: number) => {
+  scenarioStore.removeNpcFromStep(index);
 };
-const panel = ref([0]);
 </script>
 <template>
   <v-expansion-panels v-model="panel" class="pb-4">
     <v-expansion-panel expand>
-      <v-expansion-panel-title color="secondary">
-        Items
-      </v-expansion-panel-title>
-      <v-expansion-panel-text>
-        <v-list>
+      <v-expansion-panel-title color="secondary"> NPC </v-expansion-panel-title>
+      <v-expansion-panel-text class="p-0">
+        <v-list v-if="isAddEnabled" lines="two">
           <v-list-item
-            v-for="(item, index) in scenarioStore.activeStep?.items"
+            v-for="(npc, index) in scenarioStore.activeStep?.npc"
             :key="index"
-            :title="item"
+            :title="npc.name"
+            :subtitle="npc.name"
             :class="'text-left'"
           >
             <template v-slot:append>
@@ -29,12 +28,12 @@ const panel = ref([0]);
                 color="red"
                 icon="mdi-delete"
                 variant="text"
-                @click="removeItem(index)"
+                @click="removeNpc(index)"
               ></v-btn>
             </template>
           </v-list-item>
           <v-list-item>
-            <AddItems />
+            <AddNpc />
           </v-list-item>
         </v-list>
       </v-expansion-panel-text>

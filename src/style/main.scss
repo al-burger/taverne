@@ -1,4 +1,10 @@
 @use 'vuetify' with (
-  $body-font-family: "Poppins"
+  $body-font-family: "Poppins",
 );
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+.v-expansion-panel-title__overlay {
+  display: none!important;
+}
+.v-expansion-panel-text__wrapper {
+  padding: 0!important;
+}
