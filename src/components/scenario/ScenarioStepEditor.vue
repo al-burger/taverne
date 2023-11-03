@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useScenarioStore } from "../../store/modules/scenario";
 import { onMounted } from "vue";
-import ScenarioStepStory from "./scenarioStep/ScenarioStepStory.vue";
+import ScenarioStepStory from "./scenarioStep/ScenarioStepTimeLine.vue";
 import ScenarioStepNpc from "./scenarioStep/ScenarioStepNpc.vue";
 import ScenarioStepMonsters from "./scenarioStep/ScenarioStepMonsters.vue";
 import ScenarioStepItems from "./scenarioStep/ScenarioStepItems.vue";
@@ -14,9 +14,9 @@ onMounted(() => {
 });
 </script>
 <template>
-  <v-container class="container px-0">
+  <v-container class="container">
     <v-row>
-      <v-col md="8">
+      <v-col md="7">
         <ScenarioStepStory class="story" />
       </v-col>
       <v-col md="4">

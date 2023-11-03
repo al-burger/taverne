@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Scenario, Step, Npc, Monster } from "../../types/appTypes";
+import { Scenario, Step, Npc, Monster, TimelineItem } from "../../types/appTypes";
 import { getMonsters, getMonsterStats } from "../../API/monsters";
 import { getItems, getItemStats } from "../../API/items";
 import { usePlayerStore } from "./player";
@@ -12,26 +12,6 @@ export const useScenarioStore = defineStore("scenario", {
     _monsterStats: {} as Record<string, any>,
     _items: [] as string[],
     _activeStepIndex: -1,
-    _timelineItems: [
-      {
-        icon: "mdi-star",
-        title: "Rencontre de Thrain",
-        description:
-          "Les aventuriers rencontrent Thrain dans le hall principal de la cité naine de Khazadur dès leur arrivée. Il est chargé de présenter la situation et de solliciter leur aide.",
-      },
-      {
-        icon: "mdi-star",
-        title: "Préservation de l'histoire naine",
-        description:
-          "Les aventuriers peuvent trouver Dernoc dans la bibliothèque des Anciennes Légendes de Khazadur, où il étudie d'anciens manuscrits. Il peut leur fournir des informations sur l'histoire de la mine.",
-      },
-      {
-        icon: "mdi-star",
-        title: "En route vers la forge",
-        description:
-          "Mira tient sa forge dans la cité naine et offre ses services aux aventuriers. Elle peut forger des équipements ou objets magiques en échange de leur aide pour sécuriser la mine.",
-      },
-    ],
   }),
   actions: {
     addScenario(scenario: Scenario) {
@@ -50,6 +30,7 @@ export const useScenarioStore = defineStore("scenario", {
         npc: [],
         monsters: [],
         items: [],
+        timelineItems: []
       };
       this._scenarioToEdit.steps.push(stepFormated);
     },
@@ -71,11 +52,24 @@ export const useScenarioStore = defineStore("scenario", {
     },
     addMonsterToStep(monster: Monster[]) {
       const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
+      if (!currentStep.monsters) {
+        currentStep.monsters = [];
+      }
       currentStep.monsters.push(...monster);
     },
     addItemToStep(item: string[]) {
       const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
+      if (!currentStep.items) {
+        currentStep.items = [];
+      }
       currentStep.items.push(...item);
+    },
+    addTimelineItemToStep(story: TimelineItem) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
+      if (!currentStep.timelineItems) {
+        currentStep.timelineItems = [];
+      }
+      currentStep.timelineItems.push(story);
     },
     removeItemFromStep(index: number) {
       const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
@@ -88,6 +82,10 @@ export const useScenarioStore = defineStore("scenario", {
     removeNpcFromStep(index: number) {
       const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
       currentStep.npc.splice(index, 1);
+    },
+    removeTimelineItemFromStep(index: number) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
+      currentStep.timelineItems.splice(index, 1);
     },
     async fetchMonsters() {
       try {

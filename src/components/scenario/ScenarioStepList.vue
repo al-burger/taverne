@@ -19,7 +19,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <v-navigation-drawer color="surface" permanent name="drawer">
+  <v-navigation-drawer color="surface" width="300" permanent name="drawer">
     <v-list :lines="false" nav>
       <v-list-item
         v-for="(item, i) in scenarioStore._scenarioToEdit.steps"

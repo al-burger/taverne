@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { useScenarioStore } from "../../../store/modules/scenario";
 import AddNpc from "../itemSelect/AddNpc.vue";
 const scenarioStore = useScenarioStore();
-const isAddEnabled = ref<boolean>(false);
 const panel = ref<number[]>([0]);
 const removeNpc = (index: number) => {
   scenarioStore.removeNpcFromStep(index);
@@ -14,7 +13,7 @@ const removeNpc = (index: number) => {
     <v-expansion-panel expand>
       <v-expansion-panel-title color="secondary"> NPC </v-expansion-panel-title>
       <v-expansion-panel-text class="p-0">
-        <v-list v-if="isAddEnabled" lines="two">
+        <v-list lines="two">
           <v-list-item
             v-for="(npc, index) in scenarioStore.activeStep?.npc"
             :key="index"

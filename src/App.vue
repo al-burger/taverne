@@ -22,7 +22,7 @@ function logOut() {
         <v-btn :disabled="!loginStore.isUserLogged" type="submit" color="primary" @click="logOut">Se déconnecter</v-btn>
       </div>
     </v-app-bar>
-    <v-main class="wrapper d-flex align-center text-center justify-center pt-0 bg-background flex-column">
+    <v-main class="wrapper d-flex align-center text-center pt-0 bg-background flex-column">
       <router-view></router-view>
       <CampaignSaveButton v-if="loginStore.isUserLogged" />
     </v-main>
