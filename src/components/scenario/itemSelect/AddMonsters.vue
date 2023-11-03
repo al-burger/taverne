@@ -21,9 +21,6 @@ const getMonsterStats = async (monster: any) => {
 };
 </script>
 <template>
-    <div v-for="(item, index) in scenarioStore.activeStep?.monsters" class="text-right">
-      {{ item }} <v-btn variant="outlined" @click="removeMonster(index)">Remove</v-btn><v-btn @click="getMonsterStats(item)">(?)</v-btn>
-    </div>
     <v-autocomplete
       label="Select"
       v-model="autocompleteMonsters"
@@ -33,7 +30,7 @@ const getMonsterStats = async (monster: any) => {
       multiple
     >
       <template v-slot:append>
-        <v-btn @click="addMonsters">add</v-btn>
+        <v-btn @click="addMonsters" color="primary">add</v-btn>
       </template>
     </v-autocomplete>
 </template>

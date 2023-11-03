@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="login" class="rounded shadow elevation-4 pa-8 bg-card">
+  <form @submit.prevent="login" class="rounded shadow elevation-4 pa-8 bg-card my-auto">
     <v-card-title>Login</v-card-title>
     <v-alert v-if="error" type="error">{{ error }}</v-alert>
     <v-row>

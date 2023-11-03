@@ -1,5 +1,5 @@
 import AddItems from './AddItems.vue';
-import AddPnj from './AddPnj.vue';
+import AddNpc from './AddNpc.vue';
 import AddMonsters from './AddMonsters.vue';
 
-export { AddItems, AddPnj, AddMonsters };
+export { AddItems, AddNpc, AddMonsters };

@@ -31,7 +31,7 @@ onMounted(() => {
   <template v-else>
     <v-card
       v-if="!playerStore.campaigns.length"
-      class="mx-auto mb-4 p-8 text-center bg-card"
+      class="m-auto mb-4 p-8 text-center bg-card"
       width="800"
     >
       <v-card-item>
@@ -44,7 +44,7 @@ onMounted(() => {
       </v-card-item>
     </v-card>
     <v-card
-      class="mx-auto mb-4 p-8 text-center bg-card"
+      class="my-auto p-8 text-center bg-card"
       width="800"
       v-else
       v-for="campaign in playerStore.campaigns"

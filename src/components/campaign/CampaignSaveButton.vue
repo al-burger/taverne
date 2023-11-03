@@ -1,4 +1,4 @@
-<script module lang="ts">
+<script setup lang="ts">
 import { usePlayerStore } from "../../store/modules/player";
 
 const playerStore = usePlayerStore();
@@ -8,6 +8,16 @@ const updateCampaign = () => {
 };
 </script>
 <template>
+  <v-overlay
+      :model-value="playerStore._isLoading"
+      class="align-center justify-center"
+    >
+      <v-progress-circular
+        color="primary"
+        indeterminate
+        size="64"
+      ></v-progress-circular>
+    </v-overlay>
   <v-btn :class="'fixed'" @click="updateCampaign"
     >Mettre à jour la campagne</v-btn
   >
@@ -15,7 +25,5 @@ const updateCampaign = () => {
 <style>
 .fixed {
   position: fixed;
-  bottom: 2rem;
-  right: 4rem;
 }
 </style>

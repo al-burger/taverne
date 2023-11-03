@@ -15,22 +15,9 @@ const addItems = () => {
   scenarioStore.addItemToStep(autocompleteItems.value);
   autocompleteItems.value = [];
 };
-
-const removeItem = async (index: number) => {
-  scenarioStore.removeItemFromStep(index);
-};
 </script>
 
 <template>
-  <div>
-    <div
-      v-for="(item, index) in scenarioStore.activeStep?.items"
-      class="text-right"
-    >
-      {{ item
-      }}<v-btn variant="outlined" @click="removeItem(index)">Remove</v-btn
-      ><v-btn @click="fetchItemStats(item)">(?)</v-btn>
-    </div>
     <v-autocomplete
       label="Select"
       v-model="autocompleteItems"
@@ -40,8 +27,7 @@ const removeItem = async (index: number) => {
       multiple
     >
       <template v-slot:append>
-        <v-btn @click="addItems">add</v-btn>
+        <v-btn @click="addItems" color="primary">add</v-btn>
       </template>
     </v-autocomplete>
-  </div>
 </template>
