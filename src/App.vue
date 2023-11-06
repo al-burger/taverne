@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { useAuthStore } from "./store/modules/auth";
+import { usePlayerStore } from "./store/modules/player";
 import { useRouter } from "vue-router";
 import CampaignSaveButton from "./components/campaign/CampaignSaveButton.vue"
 
+
 const loginStore = useAuthStore();
+const playerStore = usePlayerStore()
 const router = useRouter();
 
 function logOut() {
@@ -24,7 +27,7 @@ function logOut() {
     </v-app-bar>
     <v-main class="wrapper d-flex align-center text-center pt-0 bg-background flex-column">
       <router-view></router-view>
-      <CampaignSaveButton v-if="loginStore.isUserLogged" />
+      <CampaignSaveButton v-if="playerStore._campaign.id" />
     </v-main>
   </v-layout>
 </template>

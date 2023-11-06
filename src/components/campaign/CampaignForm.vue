@@ -17,7 +17,7 @@ const isCreateDisabled = computed(() => {
 
 function initCampaign() {
   playerStore.setCampaignName(campaignName.value);
-  playerStore.setCampaignPicture(selectedFile.value);
+  playerStore.setCampaignPicture(selectedFile.value as File);
   router.push({ name: "PlayerStats" });
 }
 

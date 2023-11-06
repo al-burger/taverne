@@ -15,7 +15,7 @@ const getAuthMock = vi.fn(() => ({
   createUserWithEmailAndPassword,
 }));
 const signInWithEmailAndPasswordMock = vi.fn(() => {
-  signInWithEmailAndPassword
+  createUserWithEmailAndPassword
 });
 
 vi.mock("firebase/auth", async () => {
