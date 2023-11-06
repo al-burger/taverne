@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { Player, Campaign } from "../../types/appTypes";
 import { getClasses } from "../../API/classes";
 import { getRaces } from "../../API/races";
+import { getAbilityScores, getSkills } from "../../API/skills";
 import { getAuth } from "firebase/auth";
 import {
   setDoc,
@@ -29,6 +30,8 @@ export const usePlayerStore = defineStore("player", {
     _campaign: {} as Campaign,
     _campaignsList: [] as Campaign[],
     _isLoading: false as boolean,
+    _skills: [] as string[],
+    _abilityScores: [] as string[],
   }),
   actions: {
     setCampaignName(campaignName: string) {
@@ -156,12 +159,34 @@ export const usePlayerStore = defineStore("player", {
         console.error("Erreur lors de la récupération des classes:", error);
       }
     },
+    async fetchSkills(): Promise<void> {
+      try {
+        const response = await getSkills();
+        // Récupère les données des classes depuis la réponse
+        const skills = response.data.results.map((item: any) => item.name);
+        // Met à jour l'état du store avec les classes
+        this._skills = skills;
+      } catch (error) {
+        console.error("Erreur lors de la récupération des classes:", error);
+      }
+    },
+    async fetchAbilityScores(): Promise<void> {
+      try {
+        const response = await getAbilityScores();
+        // Récupère les données des classes depuis la réponse
+        const abilityScores = response.data.results.map((item: any) => item.name);
+        // Met à jour l'état du store avec les classes
+        this._abilityScores = abilityScores;
+      } catch (error) {
+        console.error("Erreur lors de la récupération des classes:", error);
+      }
+    },
     async updateCampaign(): Promise<void> {
       this._isLoading = true;
       try {
         const updatedCampaign = this._campaign;
         const campaignRef = doc(db, "campaigns", updatedCampaign.id);
-        await setDoc(campaignRef, updatedCampaign)
+        await setDoc(campaignRef, updatedCampaign);
       } catch (err) {
         console.error("Erreur lors de la mise à jour de la campagne : ", err);
       } finally {

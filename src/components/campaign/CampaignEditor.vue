@@ -8,16 +8,17 @@ import PlayerLayer from "../player/PlayerLayer.vue";
 const playerStore = usePlayerStore();
 const scenarioStore = useScenarioStore();
 const player = ref<any>({});
-const isActive = ref<boolean>(false);
+const isLayerOpened = ref<boolean>(false);
+
 const scenarioName = ref<string>("");
 
 const editPlayer = (playerToEdit: any) => {
   player.value = playerToEdit;
-  isActive.value = true;
+  isLayerOpened.value = true;
 };
 
 const closeLayer = () => {
-  isActive.value = false;
+  isLayerOpened.value = false;
 };
 
 const addScenario = () => {
@@ -60,7 +61,7 @@ onMounted(() => {
     </div>
     <PlayerLayer
       :player="player"
-      :isActive="isActive"
+      :isLayerOpened="isLayerOpened"
       @close-layer="closeLayer"
     />
     <v-list class="bg-card">
