@@ -5,6 +5,7 @@ import ScenarioStepStory from "./scenarioStep/ScenarioStepTimeLine.vue";
 import ScenarioStepNpc from "./scenarioStep/ScenarioStepNpc.vue";
 import ScenarioStepMonsters from "./scenarioStep/ScenarioStepMonsters.vue";
 import ScenarioStepItems from "./scenarioStep/ScenarioStepItems.vue";
+import ScenarioStepSummary from "./scenarioStep/ScenarioStepSummary.vue";
 
 const scenarioStore = useScenarioStore();
 const emit = defineEmits(["emitStep"]);
@@ -17,7 +18,7 @@ onMounted(() => {
   <v-container class="container">
     <v-row>
       <v-col md="12">
-        <ScenarioStepResume class="resume" />
+        <ScenarioStepSummary class="summary" />
       </v-col>
     </v-row>
     <v-row>

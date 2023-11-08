@@ -205,4 +205,5 @@ export const usePlayerStore = defineStore("player", {
     players: (state) => state._campaign.players,
     campaigns: (state) => state._campaignsList,
   },
+  persist: true,
 });
