@@ -51,5 +51,5 @@ export const useAuthStore = defineStore('auth', {
     isUserLogged: (state) => state.user.isUserLogged,
     currentUser: (state) => state.user,
   },
-  // persist: true,
+  persist: true,
 })

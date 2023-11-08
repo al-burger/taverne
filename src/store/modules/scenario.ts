@@ -30,7 +30,8 @@ export const useScenarioStore = defineStore("scenario", {
         npc: [],
         monsters: [],
         items: [],
-        timelineItems: []
+        timelineItems: [],
+        summary: ''
       };
       this._scenarioToEdit.steps.push(stepFormated);
     },
@@ -71,6 +72,11 @@ export const useScenarioStore = defineStore("scenario", {
       }
       currentStep.timelineItems.push(story);
     },
+    addSummaryToStep(summary: string) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
+      currentStep.summary = summary;
+      console.log(currentStep.summary);
+    },
     removeItemFromStep(index: number) {
       const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
       currentStep.items.splice(index, 1);
@@ -92,7 +98,7 @@ export const useScenarioStore = defineStore("scenario", {
         const response = await getMonsters();
         this._monsters = response.data.results as string[];
       } catch (error) {
-        console.error("Erreur lors de la récupération des monstres:", error);
+        console.error("Erreur: ", error);
       }
     },
     async fetchMonsterStats(monster: string) {
@@ -103,7 +109,7 @@ export const useScenarioStore = defineStore("scenario", {
         console.log(response.data);
         return response.data;
       } catch (error) {
-        console.error("Erreur lors de la récupération des monstres:", error);
+        console.error("Erreur: ", error);
       }
     },
     async fetchItems() {
@@ -111,7 +117,7 @@ export const useScenarioStore = defineStore("scenario", {
         const response = await getItems();
         this._items = response.data.results as string[];
       } catch (error) {
-        console.error("Erreur lors de la récupération des monstres:", error);
+        console.error("Erreur: ", error);
       }
     },
     async fetchItemStats(item: string) {
@@ -119,11 +125,12 @@ export const useScenarioStore = defineStore("scenario", {
         const response = await getItemStats(item);
         return response.data.results;
       } catch (error) {
-        console.error("Erreur lors de la récupération des monstres:", error);
+        console.error("Erreur: ", error);
       }
     },
   },
   getters: {
     activeStep: (state) => state._scenarioToEdit.steps[state._activeStepIndex],
   },
+  persist: true,
 });

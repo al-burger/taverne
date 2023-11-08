@@ -13,7 +13,7 @@ const removeTimelineItemFromStep = (index: number) => {
   <v-expansion-panels v-model="panel" class="pb-4">
     <v-expansion-panel expand>
       <v-expansion-panel-title color="secondary">
-        Monsters
+        Story
       </v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-timeline density="compact" side="end"  class="pa-4">

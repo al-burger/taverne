@@ -34,6 +34,7 @@ export type Step = {
   monsters: Monster[];
   items: string[];
   timelineItems: TimelineItem[];
+  summary: string;
 };
 
 export type Npc = {
