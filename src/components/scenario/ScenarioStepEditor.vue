@@ -16,7 +16,12 @@ onMounted(() => {
 <template>
   <v-container class="container">
     <v-row>
-      <v-col md="7">
+      <v-col md="12">
+        <ScenarioStepResume class="resume" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col md="8">
         <ScenarioStepStory class="story" />
       </v-col>
       <v-col md="4">

@@ -19,13 +19,13 @@ const addPlayer = () => {
     <!-- Formulaire pour ajouter un joueur --><label
       for="playerField"
       class="text--grey-600 text-h6 mb-2"
-      >Entrez vos joueurs</label
+      >Enter your players</label
     >
     <div class="d-flex">
       <v-text-field
         id="playerField"
         v-model="newPlayer"
-        label="Nom du joueur"
+        label="Player Name"
       ></v-text-field>
       <v-btn @click.prevent="addPlayer" color="primary" class="mt-2 ml-2">
         Ajouter

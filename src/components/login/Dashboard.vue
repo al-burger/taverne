@@ -21,29 +21,5 @@
   </v-container>
 </template>
 
-<script>
-import { useRouter } from "vue-router";
-import { computed } from "vue";
-import { useAuthStore } from "../../store/modules/auth";
-
-export default {
-  setup() {
-    const authStore = useAuthStore();
-    const router = useRouter();
-
-    auth.onAuthStateChanged((user) => {
-      authStore.fetchuser(user);
-    });
-
-    const user = computed(() => {
-      return authStore.user;
-    });
-
-    const signOut = async () => {
-      authStore.logout();
-    };
-
-    return { user, signOut };
-  },
-};
+<script setup >
 </script>

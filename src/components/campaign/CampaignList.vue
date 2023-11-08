@@ -31,7 +31,7 @@ onMounted(() => {
   <template v-else>
     <v-card
       v-if="!playerStore.campaigns.length"
-      class="m-auto mb-4 p-8 text-center bg-card"
+      class="my-auto mb-4 p-8 text-center bg-card"
       width="800"
     >
       <v-card-item>
@@ -64,19 +64,18 @@ onMounted(() => {
           </div>
         </div>
         <v-btn
-          class="ma-auto"
+          class="ma-auto mr-4"
           @click="deleteCampaign(campaign)"
           color="primary"
           variant="outlined"
-        >
-          Supprimer
+        >Delete
         </v-btn>
         <v-btn
           class="ma-auto"
           @click="selectCampaign(campaign)"
           color="primary"
         >
-          Reprendre
+          Resume
         </v-btn>
       </v-card-item>
     </v-card>

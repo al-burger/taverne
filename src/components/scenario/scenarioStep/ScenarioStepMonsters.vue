@@ -2,11 +2,25 @@
 import { ref } from "vue";
 import { useScenarioStore } from "../../../store/modules/scenario";
 import AddMonsters from "../itemSelect/AddMonsters.vue";
+import MonsterLayer from "../../monster/MonsterLayer.vue";
 const scenarioStore = useScenarioStore();
+const monster = ref<string>("");
+const isLayerOpened = ref<boolean>(false);
+const panel = ref([0]);
+
 const removeMonsters = (index: number) => {
   scenarioStore.removeMonsterFromStep(index);
 };
-const panel = ref([0]);
+
+const openMonsterLayer = (value: string) => {
+  monster.value = value;
+  isLayerOpened.value = true;
+};
+
+const closeLayer = () => {
+  isLayerOpened.value = false;
+};
+
 </script>
 <template>
   <v-expansion-panels v-model="panel" class="pb-4">
@@ -24,7 +38,12 @@ const panel = ref([0]);
             :class="'text-left'"
           >
             <template v-slot:append>
-              <v-btn color="info" icon="mdi-information" variant="text"></v-btn>
+              <v-btn
+                color="info"
+                icon="mdi-information"
+                variant="text"
+                @click="openMonsterLayer(monster as any)"
+              ></v-btn>
               <v-btn
                 color="red"
                 icon="mdi-delete"
@@ -40,4 +59,9 @@ const panel = ref([0]);
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
+      <MonsterLayer
+        :monster="monster"
+        :isLayerOpened="isLayerOpened"
+        @close-layer="closeLayer"
+      />
 </template>

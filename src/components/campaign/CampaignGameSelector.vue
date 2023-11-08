@@ -19,7 +19,7 @@ const setGame = () => {
     <v-select
       v-model="game"
       :items="props.games"
-      label="Sélectionner le jeu"
+      label="Select game"
       outlined
       @update:modelValue="setGame"
     ></v-select>

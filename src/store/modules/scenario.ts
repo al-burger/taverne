@@ -96,8 +96,11 @@ export const useScenarioStore = defineStore("scenario", {
       }
     },
     async fetchMonsterStats(monster: string) {
+      console.log('fetch', monster);
       try {
+        console.log('try')
         const response = await getMonsterStats(monster);
+        console.log(response.data);
         return response.data;
       } catch (error) {
         console.error("Erreur lors de la récupération des monstres:", error);
@@ -123,5 +126,4 @@ export const useScenarioStore = defineStore("scenario", {
   getters: {
     activeStep: (state) => state._scenarioToEdit.steps[state._activeStepIndex],
   },
-  // persist: true,
 });

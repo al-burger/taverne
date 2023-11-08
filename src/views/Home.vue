@@ -14,6 +14,8 @@ function resetCampaign() {
     game: "",
     uid: "",
     imageURL: "",
+    scenarios: [],
+    id: ""
   };
   playerStore.setCampaign(resetedCampaign);
 }
@@ -39,7 +41,7 @@ onMounted(() => {
             @click="resetCampaign"
           >
             <h2 class="text-h4 font-weight-bold text-center mb-2">
-              Créer une campagne
+              Create a campaign
             </h2>
             <div>
               <img src="../assets/adventure.svg" />
@@ -54,9 +56,7 @@ onMounted(() => {
             class="rounded-lg shadow-lg d-flex align-center flex-column"
             style="background-color: #e16d64"
           >
-            <h2 class="text-h4 font-weight-bold text-center mb-2">
-              Reprendre une campagne
-            </h2>
+            <h2 class="text-h4 font-weight-bold text-center mb-2">Resume a campaign</h2>
             <div>
               <img src="../assets/wizard.svg" />
             </div>
