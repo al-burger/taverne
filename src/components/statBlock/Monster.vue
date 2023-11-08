@@ -8,19 +8,20 @@ const scenarioStore = useScenarioStore();
 const monsterStats = ref<any>({});
 
 onMounted(async () => {
-  const monster = props.monster ?? "";
-  const monsterLowerCase = monster.toLowerCase().replace(/\s/g, "-");
-  monsterStats.value = await scenarioStore.fetchMonsterStats(monsterLowerCase);
+  if (props.monster) {
+    const monsterLowerCase = props.monster?.toLowerCase().replace(/\s/g, "-");
+    monsterStats.value = await scenarioStore.fetchMonsterStats(monsterLowerCase);
+  }
 });
 </script>
 
 <template>
-  <v-card class="monster-stats" v-if="monsterStats.data">
+  <v-card class="monster-stats" v-if="monsterStats.name">
     <v-card-title class="monster-header">
       <v-row>
         <v-col>
-          <h2 class="monster-name">{{ monsterStats.data.name }}</h2>
-          <p class="monster-type">{{ monsterStats.data.type }}</p>
+          <h2 class="monster-name">{{ monsterStats.name }}</h2>
+          <p class="monster-type">{{ monsterStats.type }}</p>
         </v-col>
       </v-row>
     </v-card-title>
@@ -30,19 +31,19 @@ onMounted(async () => {
           <v-row class="stat-line">
             <v-col cols="6" class="stat-label"> Classe d'Armure </v-col>
             <v-col cols="6" class="stat-value">
-              {{ monsterStats.data.armor_class[0].value }}
+              {{ monsterStats.armor_class[0].value }}
             </v-col>
           </v-row>
           <v-row class="stat-line">
             <v-col cols="6" class="stat-label"> Points de Vie </v-col>
             <v-col cols="6" class="stat-value">
-              {{ monsterStats.data.hit_points }}
+              {{ monsterStats.hit_points }}
             </v-col>
           </v-row>
           <v-row class="stat-line">
             <v-col cols="6" class="stat-label"> Vitesse </v-col>
             <v-col cols="6" class="stat-value">
-              {{ monsterStats.data.speed.walk }}
+              {{ monsterStats.speed.walk }}
             </v-col>
           </v-row>
           <v-row class="abilities">
@@ -50,7 +51,7 @@ onMounted(async () => {
               <v-row class="ability">
                 <v-col cols="12" class="ability-name"> Force </v-col>
                 <v-col cols="12" class="ability-value">
-                  {{  monsterStats.data.strength }}
+                  {{  monsterStats.strength }}
                 </v-col>
               </v-row>
             </v-col>
@@ -58,7 +59,7 @@ onMounted(async () => {
               <v-row class="ability">
                 <v-col cols="12" class="ability-name"> Dextérité </v-col>
                 <v-col cols="12" class="ability-value">
-                  {{ monsterStats.data.dexterity }}
+                  {{ monsterStats.dexterity }}
                 </v-col>
               </v-row>
             </v-col>
@@ -66,7 +67,7 @@ onMounted(async () => {
               <v-row class="ability">
                 <v-col cols="12" class="ability-name"> Constitution </v-col>
                 <v-col cols="12" class="ability-value">
-                  {{ monsterStats.data.constitution }}
+                  {{ monsterStats.constitution }}
                 </v-col>
               </v-row>
             </v-col>
@@ -76,7 +77,7 @@ onMounted(async () => {
               <v-row class="ability">
                 <v-col cols="12" class="ability-name"> Intelligence </v-col>
                 <v-col cols="12" class="ability-value">
-                  {{ monsterStats.data.intelligence }}
+                  {{ monsterStats.intelligence }}
                 </v-col>
               </v-row>
             </v-col>
@@ -84,7 +85,7 @@ onMounted(async () => {
               <v-row class="ability">
                 <v-col cols="12" class="ability-name"> Sagesse </v-col>
                 <v-col cols="12" class="ability-value">
-                  {{ monsterStats.data.wisdom }}
+                  {{ monsterStats.wisdom }}
                 </v-col>
               </v-row>
             </v-col>
@@ -92,7 +93,7 @@ onMounted(async () => {
               <v-row class="ability">
                 <v-col cols="12" class="ability-name"> Charisme </v-col>
                 <v-col cols="12" class="ability-value">
-                  {{ monsterStats.data.charisma }}
+                  {{ monsterStats.charisma }}
                 </v-col>
               </v-row>
             </v-col>
@@ -102,21 +103,21 @@ onMounted(async () => {
     </v-card-text>
     <v-card-text class="monster-traits">
       <h3 class="section-title">Traits</h3>
-      <div v-for="action in monsterStats.data.special_abilities">
+      <div v-for="action in monsterStats.special_abilities">
         <h4>{{ action.name }} :</h4>
         <p>{{ action.desc }}</p>
       </div>
     </v-card-text>
     <v-card-text class="monster-actions">
       <h3 class="section-title">Actions</h3>
-      <div v-for="action in monsterStats.data.actions">
+      <div v-for="action in monsterStats.actions">
         <h4>{{ action.name }} :</h4>
         <p>{{ action.desc }}</p>
       </div>
     </v-card-text>
     <v-card-text class="monster-legendary-actions">
       <h3 class="section-title">Actions Légendaires</h3>
-      <div v-for="action in monsterStats.data.legendary_actions">
+      <div v-for="action in monsterStats.legendary_actions">
         <h4>{{ action.name }} :</h4>
         <p>{{ action.desc }}</p>
       </div>
@@ -133,7 +134,6 @@ onMounted(async () => {
   text-align: left;
   font-family: "serif";
   color: #000;
-  width: 50%;
 }
 
 .monster-header {

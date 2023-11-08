@@ -34,12 +34,12 @@ function handleFileChange(event: any) {
     <v-row class="mb-4">
       <v-col cols="12">
         <label for="campaignName" class="text--grey-600 text-h6 mb-2"
-          >Nom de la campagne</label
+          >Campaign name</label
         >
         <v-text-field
           id="campaignName"
           v-model="campaignName"
-          label="Entrez le nom de la campagne"
+          label="Enter campaign name"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -47,7 +47,7 @@ function handleFileChange(event: any) {
     <v-row class="mb-4">
       <v-col cols="12">
         <label for="selectedGame" class="text--grey-600 text-h6 mb-2"
-          >Sélectionner le jeu</label
+          >Select game</label
         >
         <CampaignGameSelector :games="games" />
       </v-col>
@@ -61,7 +61,7 @@ function handleFileChange(event: any) {
     <v-row>
       <v-col cols="12">
         <label for="selectedGame" class="text--grey-600 text-h6 mb-2"
-          >Sélectionner l'image de couverture</label
+          >Select cover image</label
         >
         <v-file-input label="File input" @change="handleFileChange" v-model="selectedFile"></v-file-input>
         {{ selectedFile }}
@@ -70,7 +70,7 @@ function handleFileChange(event: any) {
     <v-row>
       <v-col cols="12">
         <v-btn type="submit" color="primary" :disabled="!isCreateDisabled"
-          >Créer les joueurs</v-btn
+          >Create players</v-btn
         >
       </v-col>
     </v-row>

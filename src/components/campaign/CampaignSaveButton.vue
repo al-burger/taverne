@@ -19,7 +19,7 @@ const updateCampaign = () => {
       ></v-progress-circular>
     </v-overlay>
   <v-btn :class="'fixed'" @click="updateCampaign"
-    >Mettre à jour la campagne</v-btn
+    >Update campaign</v-btn
   >
 </template>
 <style>
