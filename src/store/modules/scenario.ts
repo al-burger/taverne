@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Scenario, Step, Npc, Monster, TimelineItem } from "../../types/appTypes";
+import { Scenario, Step, Npc, Monster, TimelineItem, Place } from "../../types/appTypes";
 import { getMonsters, getMonsterStats } from "../../API/monsters";
 import { getItems, getItemStats } from "../../API/items";
 import { usePlayerStore } from "./player";
@@ -31,7 +31,8 @@ export const useScenarioStore = defineStore("scenario", {
         monsters: [],
         items: [],
         timelineItems: [],
-        summary: ''
+        summary: '',
+        places: [],
       };
       this._scenarioToEdit.steps.push(stepFormated);
     },
@@ -75,7 +76,13 @@ export const useScenarioStore = defineStore("scenario", {
     addSummaryToStep(summary: string) {
       const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
       currentStep.summary = summary;
-      console.log(currentStep.summary);
+    },
+    addPlacesToStep(place: Place) {
+      const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
+      if (!currentStep.places) {
+        currentStep.places = [];
+      }
+      currentStep.places.push(place);
     },
     removeItemFromStep(index: number) {
       const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
@@ -102,11 +109,8 @@ export const useScenarioStore = defineStore("scenario", {
       }
     },
     async fetchMonsterStats(monster: string) {
-      console.log('fetch', monster);
       try {
-        console.log('try')
         const response = await getMonsterStats(monster);
-        console.log(response.data);
         return response.data;
       } catch (error) {
         console.error("Erreur: ", error);
