@@ -35,6 +35,12 @@ export type Step = {
   items: string[];
   timelineItems: TimelineItem[];
   summary: string;
+  places: Place[];
+};
+
+export type Place = {
+  name: string;
+  description: string;
 };
 
 export type Npc = {

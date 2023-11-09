@@ -4,6 +4,7 @@ import { createPinia, setActivePinia } from "pinia";
 import { resultMonsterStats, results } from "../../API/__mocks__/monsters";
 import { itemsResults, itemStatsResults } from "../../API/__mocks__/items";
 import axios from "axios";
+import { usePlayerStore } from "./player";
 
 describe("Scenario Store", () => {
   let store: any;
@@ -46,6 +47,53 @@ describe("Scenario Store", () => {
     expect(store._scenarioToEdit).toEqual(scenario);
   });
 
+  it("should set the scenario", () => {
+    const playerStore = usePlayerStore();
+
+    playerStore._campaign.scenarios = [
+      {
+        name: "Scenario 1",
+        steps: [
+          {
+            name: "Étape 1",
+            npc: [{ name: "NPC 1", title: "Marchand" }],
+            monsters: [{ name: "Monstre 1" }],
+            items: ["Épée magique", "Potion de soin"],
+            timelineItems: [
+              { title: "Événement 1", description: "Quelque chose se passe." },
+            ],
+            summary: "Résumé de l'étape 1",
+            places: [
+              { name: "Village 1", description: "Un village pittoresque." },
+            ],
+          },
+          {
+            name: "Étape 2",
+            npc: [{ name: "NPC 2", title: "Forgeron" }],
+            monsters: [{ name: "Monstre 2" }],
+            items: ["Armure lourde", "Élixir de puissance"],
+            timelineItems: [
+              { title: "Événement 2", description: "Un autre événement." },
+            ],
+            summary: "Résumé de l'étape 2",
+            places: [
+              { name: "Forêt 1", description: "Une forêt mystérieuse." },
+            ],
+          },
+        ],
+      },
+    ];
+
+    store.setScenarios();
+
+    expect(store._scenarios).toEqual(playerStore._campaign.scenarios);
+  });
+
+  it("should set the active step", () => {
+    store.setActiveStep(0)
+    expect(store._activeStepIndex).toEqual(0)
+  });
+
   it("should add a step to the active scenario", () => {
     store._scenarioToEdit = createScenario("Test Scenario");
     store._activeStepIndex = 0;
@@ -80,6 +128,19 @@ describe("Scenario Store", () => {
     expect(activeStep.monsters).toEqual(monster);
   });
 
+  it("should add a summary to the step", () => {
+    const summary = "test";
+    const scenario = createScenarioWithSteps("Test Scenario", [
+      "Step 1",
+      "Step 2",
+    ]);
+    store._scenarioToEdit = scenario;
+    store._activeStepIndex = 0;
+    store.addSummaryToStep(summary);
+    const activeStep = store._scenarioToEdit.steps[store._activeStepIndex];
+    expect(activeStep.summary).toEqual(summary);
+  });
+
   it("should add an item to the active step", () => {
     const scenario = createScenarioWithSteps("Test Scenario", [
       "Step 1",
@@ -92,6 +153,20 @@ describe("Scenario Store", () => {
     const activeStep = store._scenarioToEdit.steps[store._activeStepIndex];
     expect(activeStep.items).toHaveLength(2);
     expect(activeStep.items).toEqual(item);
+  });
+
+  it("should add places to steps", () => {
+    const scenario = createScenarioWithSteps("Test Scenario", [
+      "Step 1",
+      "Step 2",
+    ]);
+    const place = [{ name: "string", description: "string" }];
+    store._scenarioToEdit = scenario;
+    store._activeStepIndex = 0;
+    store.addPlacesToStep(place);
+    const activeStep = store._scenarioToEdit.steps[store._activeStepIndex];
+    expect(activeStep.places).toHaveLength(1);
+    expect(activeStep.places).toContain(place);
   });
 
   it("should add an TimelineItem to the active step", () => {
@@ -151,6 +226,39 @@ describe("Scenario Store", () => {
     store.addNpcToStep(npc);
     store.removeNpcFromStep(index);
     expect(activeStep.npc).toHaveLength(0);
+  });
+
+  it("should update the active step", () => {
+    const stepObject = {
+      name: "Example Step",
+      npc: [
+        { name: "NPC 1", title: "Title 1" },
+        { name: "NPC 2", title: "Title 2" }
+      ],
+      monsters: [
+        { name: "Monster 1" },
+        { name: "Monster 2" }
+      ],
+      items: ["Item 1", "Item 2"],
+      timelineItems: [
+        { title: "Timeline Item 1", description: "Description 1" },
+        { title: "Timeline Item 2", description: "Description 2" }
+      ],
+      summary: "Summary of the step",
+      places: [
+        { name: "Place 1", description: "Description of Place 1" },
+        { name: "Place 2", description: "Description of Place 2" }
+      ]
+    };
+    const scenario = createScenarioWithSteps("Test Scenario", [
+      "Step 1",
+      "Step 2",
+    ]);
+    store._scenarioToEdit = scenario;
+    store._activeStepIndex = 0;
+    store.updateStep(0, stepObject);
+    const activeStep = store._scenarioToEdit.steps[store._activeStepIndex];
+    expect(activeStep).toEqual(stepObject);
   });
 
   it("should remove a timeline item from the active step", () => {
@@ -453,5 +561,13 @@ describe("Scenario Store", () => {
     expect(res).toEqual(itemStatsResults);
     // Restaurez la fonction axios.get originale
     vi.restoreAllMocks();
+  });
+
+  it("should return the active step", () => {
+    const scenario = createScenarioWithSteps("Test Scenario", ["Step 1", "Step 2"]);
+    store._scenarioToEdit = scenario;
+    store._activeStepIndex = 0;
+    const activeStep = store.activeStep;
+    expect(activeStep).toEqual(scenario.steps[0]);
   });
 });
