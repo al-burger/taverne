@@ -301,7 +301,7 @@ describe("Scenario Store", () => {
     vi.spyOn(axios, "get").mockResolvedValue(mockApiResponse);
     await store.fetchMonsters();
     expect(store._monsters).toEqual(results);
-    // Restaurez la fonction axios.get originale
+    
     vi.restoreAllMocks();
   });
 
@@ -499,7 +499,7 @@ describe("Scenario Store", () => {
     vi.spyOn(axios, "get").mockResolvedValue(mockApiResponse);
     const stats = await store.fetchMonsterStats("aboleth");
     expect(stats).toEqual(resultMonsterStats);
-    // Restaurez la fonction axios.get originale
+    
     vi.restoreAllMocks();
   });
 
@@ -528,7 +528,7 @@ describe("Scenario Store", () => {
     vi.spyOn(axios, "get").mockResolvedValue(mockApiResponse);
     await store.fetchItems();
     expect(store._items).toEqual(itemsResults);
-    // Restaurez la fonction axios.get originale
+    
     vi.restoreAllMocks();
   });
 
@@ -559,7 +559,6 @@ describe("Scenario Store", () => {
     vi.spyOn(axios, "get").mockResolvedValue(mockApiResponse);
     const res = await store.fetchItemStats("amulet-of-health");
     expect(res).toEqual(itemStatsResults);
-    // Restaurez la fonction axios.get originale
     vi.restoreAllMocks();
   });
 

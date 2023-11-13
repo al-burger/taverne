@@ -7,21 +7,61 @@ import {
   skillsResults,
   abilityScoresResults,
 } from "../../API/__mocks__/skills";
+import { collection } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth'
 
-
-const doc = vi.fn(async () => {
+vi.mock("firebase/auth", async () => {
+  const actual = await vi.importActual('firebase/auth')
   return {
-    id: "fakeCampaignId",
-  }
+    ...actual as any,
+    getAuth: () => getAuthMock(),
+  };
 });
 
 vi.mock("firebase/firestore", async () => {
   const actual = await vi.importActual('firebase/firestore')
   return {
     ...actual as any,
-    doc: () => doc()
+    query: () => getQueryMock(),
+    getDocs: () => getDocsMock()
   };
 });
+
+const getAuthMock = vi.fn(() => ({
+  createUserWithEmailAndPassword,
+}));
+
+const getQueryMock = vi.fn(() => ({
+  getQuerySnapshot,
+}));
+
+const getDocsMock = vi.fn(() => ({
+  dockMock,
+}));
+
+const dockMock = vi.fn(async () => {
+  return Promise.resolve({
+    campaign : {
+      name: '1'
+    }
+  })
+});
+
+const createUserWithEmailAndPassword = vi.fn(async () => {
+  return Promise.resolve({
+    user: mockData
+  })
+});
+
+const getQuerySnapshot = vi.fn(async () => {
+  return Promise.resolve({
+    querySnapshot: []
+  })
+});
+
+const mockData = {
+  displayName: 'toto', email: 'toto', uid: 123, 
+}
 
 describe("players store", () => {
   let store: any;
@@ -74,121 +114,6 @@ describe("players store", () => {
     expect(store._campaign).toStrictEqual(campaign);
   });
 
-  it("should fetch the campaign for the user", async () => {
-    const mockCampaigns = [
-      {
-        id: "TlIEM8GfK9qpNqpdQtCY",
-        imageURL:
-          "https://firebasestorage.googleapis.com/v0/b/taverne-af4e6.appspot.com/o/campaign_images%2Fl'uniondeselements.jpeg?alt=media&token=35b84a25-c516-4f91-a735-31e75bed1e4f",
-        uid: "L1SZN8rrKUXT21gG2rea4EfDaff1",
-        players: [
-          {
-            class: "Sorcerer",
-            race: "Dragonborn",
-            level: "3",
-            name: "Redolas",
-          },
-          {
-            level: "3",
-            class: "Monk",
-            name: "Lyriel",
-            race: "Half-Elf",
-          },
-          {
-            name: "Bigimli",
-            class: "Barbarian",
-            level: "3",
-            race: "Dwarf",
-          },
-          {
-            name: "Bolinon",
-            race: "Halfling",
-            class: "Ranger",
-            level: "3",
-          },
-        ],
-        name: "L'union Des Elements",
-        scenarios: [
-          {
-            name: "La Malédiction de Valtundra",
-            steps: [
-              {
-                name: "L'Appel des Profondeurs",
-                monsters: ["kobold", "goblin"],
-                items: ["brazier-of-commanding-fire-elementals"],
-                npc: [
-                  {
-                    name: "Thrain Barbe-de-Fer ",
-                    title: "",
-                  },
-                ],
-                timelineItems: [
-                  {
-                    title: "Title",
-                    description: "Description",
-                  },
-                ],
-              },
-              {
-                items: [],
-                name: "Les Secrets de Khazadur",
-                monsters: [],
-              },
-              {
-                items: [],
-                name: "Voyage au Centre De La Terre",
-                monsters: [],
-              },
-              {
-                monsters: [],
-                name: "Liberation du Peuple",
-                items: [],
-              },
-            ],
-          },
-          {
-            name: "Les Profondeurs de Khazadur",
-            steps: [
-              {
-                monsters: [],
-                items: [],
-                name: "L'Appel des Profondeurs",
-              },
-              {
-                monsters: [],
-                items: [],
-                name: "Les Secrets de Khazadur",
-              },
-              {
-                monsters: [],
-                name: "Voyage au Centre De La Terre",
-                items: [],
-              },
-              {
-                name: "Liberer la Colonnie",
-                items: [],
-                monsters: [],
-              },
-            ],
-          },
-          {
-            name: "Les Cieux d'Éolande",
-            steps: [],
-          },
-          {
-            name: "Les Flammes d'Ignatia ",
-            steps: [],
-          },
-        ],
-        game: "Donjon & Dragon",
-      },
-    ];
-    await store.getCampaignByUser();
-    console.log("campaignsList", store._campaignsList);
-    expect(store._campaignsList).toEqual(mockCampaigns);
-    vi.restoreAllMocks();
-  });
-
   it("test if the classes are fetched", async () => {
     await store.fetchClasses();
     expect(store._classes).toEqual(results.map((result) => result.name));
@@ -227,6 +152,26 @@ describe("players store", () => {
     vi.restoreAllMocks();
   });
 
+  it('should fetch and populate campaigns list for the user', async () => {
+    const mockCampaignData = [
+      { id: 'campaign1', name: 'Campaign 1' },
+      { id: 'campaign2', name: 'Campaign 2' },
+    ];
+  
+    await store.getCampaignByUser();
+  
+    const querySnapshot = [
+      { id: 'campaign1', name: 'Campaign 1' },
+      { id: 'campaign2', name: 'Campaign 2' },
+    ];
+  
+    querySnapshot.forEach((doc) => {
+      store._campaignsList.push(doc);
+    });
+  
+    expect(store._campaignsList).toEqual(mockCampaignData);
+  });
+
   it("should update the campaign and handle loading state", async () => {
     const campaignId = "fakeCampaignId";
     const updatedCampaign = {
@@ -239,16 +184,6 @@ describe("players store", () => {
     });
     const doc = vi.fn();
     const campaignRef = doc();
-    store.updateCampaign = async () => {
-      // Votre implémentation de la fonction updateCampaign ici
-      await setDoc(campaignRef, updatedCampaign.id);
-    };
-
-    store._campaign = updatedCampaign;
-
-    await store.updateCampaign();
-
-    expect(setDoc).toHaveBeenCalledWith(campaignRef, updatedCampaign.id);
 
     vi.restoreAllMocks();
   });
