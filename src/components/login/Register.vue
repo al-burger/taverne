@@ -67,7 +67,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useAuthStore } from "../../store/modules/auth";
+import { useAuthStore } from "@/store/modules/auth";
 import { useRouter } from "vue-router";
 
 const loginStore = useAuthStore();

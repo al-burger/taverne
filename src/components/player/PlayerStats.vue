@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import { usePlayerStore } from "../../store/modules/player";
-import { Player } from "../../types/appTypes";
+import { usePlayerStore } from "@/store/modules/player";
+import { Player } from "@/types/appTypes";
 // @ts-ignore
 import PlayerForm from "./PlayerForm.vue"
 

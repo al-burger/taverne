@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { usePlayerStore } from "../../store/modules/player";
+import { usePlayerStore } from "@/store/modules/player";
 const router = useRouter();
 const playerStore = usePlayerStore(); // Utilise le store
 const loader = ref(true);

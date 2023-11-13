@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { usePlayerStore } from "../../store/modules/player";
-import { useScenarioStore } from "../../store/modules/scenario";
-import ScenarioPreview from "../scenario/ScenarioPreview.vue";
-import PlayerLayer from "../player/PlayerLayer.vue";
+import { usePlayerStore } from "@/store/modules/player";
+import { useScenarioStore } from "@/store/modules/scenario";
+import ScenarioPreview from "@/components/scenario/ScenarioPreview.vue";
+import PlayerLayer from "@/components/player/PlayerLayer.vue";
 
 const playerStore = usePlayerStore();
 const scenarioStore = useScenarioStore();

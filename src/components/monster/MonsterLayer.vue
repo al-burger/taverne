@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, defineProps, watch } from "vue";
-import Monster from '../statBlock/Monster.vue'
+import Monster from '@/components/statBlock/Monster.vue'
 
 const props = defineProps({
   isLayerOpened: Boolean,

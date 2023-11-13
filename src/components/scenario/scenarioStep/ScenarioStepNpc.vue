@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useScenarioStore } from "../../../store/modules/scenario";
+import { useScenarioStore } from "@/store/modules/scenario";
 import NpcLayer from "../../npc/NpcLayer.vue"
 import AddNpc from "../itemSelect/AddNpc.vue";
 const scenarioStore = useScenarioStore();

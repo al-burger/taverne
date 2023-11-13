@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useScenarioStore } from "../../../store/modules/scenario";
+import { useScenarioStore } from "@/store/modules/scenario";
 import AddMonsters from "../itemSelect/AddMonsters.vue";
 import MonsterLayer from "../../monster/MonsterLayer.vue";
 const scenarioStore = useScenarioStore();

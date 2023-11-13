@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useScenarioStore } from "../../store/modules/scenario";
+import { useScenarioStore } from "@/store/modules/scenario";
 import { onMounted } from "vue";
 import ScenarioStepStory from "./scenarioStep/ScenarioStepTimeLine.vue";
 import ScenarioStepNpc from "./scenarioStep/ScenarioStepNpc.vue";
@@ -17,6 +17,16 @@ onMounted(() => {
 </script>
 <template>
   <v-container class="container">
+    <v-row>
+      <v-col md="12" class="py-8">
+        <span class="text">
+          {{ scenarioStore._scenarioToEdit.name }}
+        </span>
+        <div>
+          {{ scenarioStore.activeStep.name }}
+        </div>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col md="12">
         <ScenarioStepSummary class="summary" />
@@ -38,5 +48,8 @@ onMounted(() => {
 <style>
 .container {
   margin-top: 4rem;
+  .text {
+    font-size: 1.75rem;
+  }
 }
 </style>

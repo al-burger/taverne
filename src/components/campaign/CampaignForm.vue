@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import CampaignGameSelector from "./CampaignGameSelector.vue";
-import PlayerList from "../player/PlayerList.vue";
+import PlayerList from "@/components/player/PlayerList.vue";
 import { useRouter } from "vue-router";
-import { usePlayerStore } from "../../store/modules/player";
+import { usePlayerStore } from "@/store/modules/player";
 
 const router = useRouter();
 const playerStore = usePlayerStore(); // Utilise le store

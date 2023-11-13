@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useScenarioStore } from "../../../store/modules/scenario";
+import { useScenarioStore } from "@/store/modules/scenario";
 import AddStory from "../itemSelect/AddTimeLineItem.vue";
 const panel = ref([0]);
 const scenarioStore = useScenarioStore();

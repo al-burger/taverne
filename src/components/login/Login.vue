@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "../../store/modules/auth";
+import { useAuthStore } from "@/store/modules/auth";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
