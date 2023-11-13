@@ -122,6 +122,18 @@ export const usePlayerStore = defineStore("player", {
         throw err;
       }
     },
+    async updateCampaign(): Promise<void> {
+      this._isLoading = true;
+      try {
+        const updatedCampaign = this._campaign;
+        const campaignRef = doc(db, "campaigns", updatedCampaign.id);
+        await setDoc(campaignRef, updatedCampaign);
+      } catch (err) {
+        console.error("Erreur lors de la mise à jour de la campagne : ", err);
+      } finally {
+        this._isLoading = false;
+      }
+    },
     async deleteCampaign(campaign: any): Promise<void> {
       try {
         const simplifiedName = this.simplifyString(campaign.name);
@@ -179,18 +191,6 @@ export const usePlayerStore = defineStore("player", {
         this._abilityScores = abilityScores;
       } catch (error) {
         console.error("Erreur lors de la récupération des classes:", error);
-      }
-    },
-    async updateCampaign(): Promise<void> {
-      this._isLoading = true;
-      try {
-        const updatedCampaign = this._campaign;
-        const campaignRef = doc(db, "campaigns", updatedCampaign.id);
-        await setDoc(campaignRef, updatedCampaign);
-      } catch (err) {
-        console.error("Erreur lors de la mise à jour de la campagne : ", err);
-      } finally {
-        this._isLoading = false;
       }
     },
     simplifyString(str: string) {
