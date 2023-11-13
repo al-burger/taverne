@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Player, Campaign } from "../../types/appTypes";
+import { Player, Campaign } from "@/types/appTypes";
 import { getClasses } from "../../API/classes";
 import { getRaces } from "../../API/races";
 import { getAbilityScores, getSkills } from "../../API/skills";

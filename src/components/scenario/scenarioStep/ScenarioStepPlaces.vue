@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useScenarioStore } from "../../../store/modules/scenario";
+import { useScenarioStore } from "@/store/modules/scenario";
 import AddPlace from "../itemSelect/AddSummary.vue";
 const scenarioStore = useScenarioStore();
 const panel = ref([0]);
@@ -14,7 +14,7 @@ const panel = ref([0]);
       <v-expansion-panel-text>
         <v-card v-if="scenarioStore.activeStep?.summary?.length">
           <v-card-item>
-            <p>{{ scenarioStore.activeStep?.summary }}</p>
+            <p>{{ scenarioStore.activeStep?.places }}</p>
           </v-card-item>
         </v-card>
         <AddPlace v-else />

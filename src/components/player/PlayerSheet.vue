@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { usePlayerStore } from "../../store/modules/player";
+import { usePlayerStore } from "@/store/modules/player";
 
 const playerStore = usePlayerStore();
 const props = defineProps({

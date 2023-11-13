@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useScenarioStore } from "../../store/modules/scenario";
-import { usePlayerStore } from "../../store/modules/player";
+import { useScenarioStore } from "@/store/modules/scenario";
+import { usePlayerStore } from "@/store/modules/player";
 import { useRouter } from "vue-router";
 
 const scenarioStore = useScenarioStore();

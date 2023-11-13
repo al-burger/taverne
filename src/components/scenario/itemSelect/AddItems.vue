@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useScenarioStore } from "../../../store/modules/scenario";
+import { useScenarioStore } from "@/store/modules/scenario";
 
 const scenarioStore = useScenarioStore();
 const autocompleteItems = ref<string[]>([]);
