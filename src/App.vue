@@ -11,7 +11,7 @@ const router = useRouter();
 
 function logOut() {
   loginStore.logout();
-  router.go(0);
+  router.push({ name: "Login" });
 }
 </script>
 

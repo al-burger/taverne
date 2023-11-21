@@ -2,16 +2,20 @@
 import { useScenarioStore } from "@/store/modules/scenario";
 import { onMounted, ref } from "vue";
 const props = defineProps({
-  monster: String,
+  monster: {
+    type: String,
+    required: true,
+  }
 });
 const scenarioStore = useScenarioStore();
 const monsterStats = ref<any>({});
+const fetchMonsterStats = async() => {
+  const stats = await scenarioStore.fetchMonsterStats(props.monster);
+  monsterStats.value = stats;
+}
 
 onMounted(async () => {
-  if (props.monster) {
-    const monsterLowerCase = props.monster?.toLowerCase().replace(/\s/g, "-");
-    monsterStats.value = await scenarioStore.fetchMonsterStats(monsterLowerCase);
-  }
+  fetchMonsterStats()
 });
 </script>
 

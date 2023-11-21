@@ -23,7 +23,7 @@ onMounted(() => {
           {{ scenarioStore._scenarioToEdit.name }}
         </span>
         <div>
-          {{ scenarioStore.activeStep.name }}
+          {{ scenarioStore.activeStep?.name }}
         </div>
       </v-col>
     </v-row>
