@@ -8,3 +8,7 @@
 .v-expansion-panel-text__wrapper {
   padding: 0!important;
 }
+
+#app .v-expansion-panels {
+  position: static;
+}

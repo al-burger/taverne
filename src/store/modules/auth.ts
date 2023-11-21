@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { User } from "@/types/appTypes";
+import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({

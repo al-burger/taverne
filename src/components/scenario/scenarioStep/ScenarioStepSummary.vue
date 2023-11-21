@@ -28,10 +28,10 @@ onMounted(() => {
         <v-card v-if="!isEditing">
           <v-card-item>
             <v-row align="center" no-gutters>
-              <v-col cols="10"
+              <v-col cols="11"
                 ><p class="text-left">{{ scenarioStore.activeStep?.summary }}</p></v-col
               >
-              <v-col cols="2" class="text-right">
+              <v-col cols="1" class="text-right">
                 <v-btn
                   variant="text"
                   icon="mdi-pencil"

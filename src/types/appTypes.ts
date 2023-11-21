@@ -44,6 +44,8 @@ export type Place = {
 };
 
 export type Npc = {
+  description?: string;
+  location?: string;
   name: string;
   title: string;
 };
@@ -55,4 +57,14 @@ export type Monster = {
 export type TimelineItem = {
   title: string;
   description : string;
+}
+
+export type AbilityScore = {
+  name: string;
+  inde: string;
+}
+
+export type Skill = {
+  name: string;
+  inde: string;
 }

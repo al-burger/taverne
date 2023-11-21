@@ -35,7 +35,7 @@ onMounted( async() => {
           <v-list>
             <v-list-item-group>
             <v-list-item v-for="abilityScore in playerStore._abilityScores" :key="abilityScore">
-                <v-list-item-title>{{ abilityScore }}</v-list-item-title>
+                <v-list-item-title>{{ abilityScore.name }}</v-list-item-title>
                 <v-list-item-subtitle>+ 1</v-list-item-subtitle>
             </v-list-item>
             </v-list-item-group>
@@ -47,7 +47,7 @@ onMounted( async() => {
       <v-list>
         <v-list-item-group>
           <v-list-item v-for="skill in playerStore._skills" :key="skill">
-            <v-list-item-title>{{ skill }}</v-list-item-title>
+            <v-list-item-title>{{ skill.name }}</v-list-item-title>
             <v-list-item-subtitle>+ 1</v-list-item-subtitle>
           </v-list-item>
         </v-list-item-group>

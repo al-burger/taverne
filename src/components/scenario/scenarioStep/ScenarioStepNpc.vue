@@ -14,6 +14,9 @@ const editNpc = (npcToEdit: any) => {
   npc.value = npcToEdit;
   isLayerOpened.value = true;
 };
+const saveNpc = (npcToSave: any) => {
+  console.log(npcToSave);
+}
 const closeLayer = () => {
   isLayerOpened.value = false;
 };
@@ -28,7 +31,7 @@ const closeLayer = () => {
             v-for="(npc, index) in scenarioStore.activeStep?.npc"
             :key="index"
             :title="npc.name"
-            :subtitle="npc.name"
+            :subtitle="npc.title"
             :class="'text-left'"
           >
             <template v-slot:append>
@@ -54,6 +57,8 @@ const closeLayer = () => {
           :npc="npc"
           :isLayerOpened="isLayerOpened"
           @close-layer="closeLayer"
+          @update:npc="saveNpc"
+          :sticky=true
         />
       </v-expansion-panel-text>
     </v-expansion-panel>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useAuthStore } from "@/store/modules/auth";
 import { usePlayerStore } from "@/store/modules/player";
 
 const playerStore = usePlayerStore();
 
+const loginStore = useAuthStore();
 const updateCampaign = () => {
   playerStore.updateCampaign();
 };
@@ -18,7 +20,7 @@ const updateCampaign = () => {
         size="64"
       ></v-progress-circular>
     </v-overlay>
-  <v-btn :class="'fixed'" @click="updateCampaign"
+  <v-btn v-if="loginStore.isUserLogged" :class="'fixed'" @click="updateCampaign"
     >Update campaign</v-btn
   >
 </template>

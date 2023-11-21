@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { Player, Campaign } from "@/types/appTypes";
-import { getClasses } from "../../API/classes";
-import { getRaces } from "../../API/races";
-import { getAbilityScores, getSkills } from "../../API/skills";
+import { Player, Campaign, AbilityScore, Skill } from "@/types/appTypes";
+import { getClasses } from "@/API/classes";
+import { getRaces } from "@/API/races";
+import { getAbilityScores, getSkills } from "@/API/skills";
 import { getAuth } from "firebase/auth";
 import {
   setDoc,
@@ -17,7 +17,7 @@ import {
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // @ts-ignore
-import { db, app } from "../../firebase.js";
+import { db, app } from "@/firebase.js";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
  // Initialize Cloud Storage and get a reference to the service
@@ -30,8 +30,8 @@ export const usePlayerStore = defineStore("player", {
     _campaign: {} as Campaign,
     _campaignsList: [] as Campaign[],
     _isLoading: false as boolean,
-    _skills: [] as string[],
-    _abilityScores: [] as string[],
+    _skills: [] as Skill[],
+    _abilityScores: [] as AbilityScore[],
   }),
   actions: {
     setCampaignName(campaignName: string) {
@@ -153,7 +153,7 @@ export const usePlayerStore = defineStore("player", {
       try {
         const response = await getClasses();
         // Récupère les données des classes depuis la réponse
-        const classes = response.data.results.map((item: any) => item.name);
+        const classes = response.data.results;
         // Met à jour l'état du store avec les classes
         this._classes = classes;
       } catch (error) {
@@ -164,7 +164,7 @@ export const usePlayerStore = defineStore("player", {
       try {
         const response = await getRaces();
         // Récupère les données des classes depuis la réponse
-        const races = response.data.results.map((item: any) => item.name);
+        const races = response.data.results;
         // Met à jour l'état du store avec les classes
         this._races = races;
       } catch (error) {
@@ -175,7 +175,7 @@ export const usePlayerStore = defineStore("player", {
       try {
         const response = await getSkills();
         // Récupère les données des classes depuis la réponse
-        const skills = response.data.results.map((item: any) => item.name);
+        const skills = response.data.results;
         // Met à jour l'état du store avec les classes
         this._skills = skills;
       } catch (error) {
@@ -186,7 +186,7 @@ export const usePlayerStore = defineStore("player", {
       try {
         const response = await getAbilityScores();
         // Récupère les données des classes depuis la réponse
-        const abilityScores = response.data.results.map((item: any) => item.name);
+        const abilityScores = response.data.results;
         // Met à jour l'état du store avec les classes
         this._abilityScores = abilityScores;
       } catch (error) {

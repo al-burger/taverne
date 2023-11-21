@@ -27,7 +27,7 @@ const closeLayer = () => {
 <template>
   <v-navigation-drawer width="500" v-model="drawerOpen" temporary location="right">
     <v-card title="Dialog">
-      <Monster v-if="monster!.length" :monster="monster" />
+      <Monster v-if="drawerOpen" :monster="monster!" />
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text="Close Dialog" @click="closeLayer"></v-btn>

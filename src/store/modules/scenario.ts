@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { Scenario, Step, Npc, Monster, TimelineItem, Place } from "@/types/appTypes";
-import { getMonsters, getMonsterStats } from "../../API/monsters";
-import { getItems, getItemStats } from "../../API/items";
+import { getMonsters, getMonsterStats } from "@/API/monsters";
+import { getItems, getItemStats } from "@/API/items";
 import { usePlayerStore } from "./player";
 
 export const useScenarioStore = defineStore("scenario", {
@@ -52,6 +52,9 @@ export const useScenarioStore = defineStore("scenario", {
       }
       currentStep.npc.push(npc);
     },
+    setNpcInformations() {
+      
+    },
     addMonsterToStep(monster: Monster[]) {
       const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
       if (!currentStep.monsters) {
@@ -68,7 +71,6 @@ export const useScenarioStore = defineStore("scenario", {
     },
     addTimelineItemToStep(story: TimelineItem) {
       const currentStep = this._scenarioToEdit.steps[this._activeStepIndex];
-      console.log(currentStep.timelineItems);
       if (!currentStep.timelineItems) {
         currentStep.timelineItems = [];
       }
