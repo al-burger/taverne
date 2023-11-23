@@ -28,11 +28,10 @@ const closeLayer = () => {
   drawerOpen.value = false;
   emit("closeLayer", drawerOpen.value);
 };
-
 </script>
 <template>
   <v-navigation-drawer
-    width="500"
+    width="600"
     v-model="drawerOpen"
     @update:modelValue="closeLayer"
     temporary
