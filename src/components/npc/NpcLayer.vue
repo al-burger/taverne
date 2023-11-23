@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, watch } from "vue";
-import NpcInfoField from "./NpcInfoField.vue"; // Assure-toi d'ajuster le chemin selon ta structure de dossier
+import NpcInfoField from "./NpcInfoField.vue";
+import ButtonsBloc from "@/components/common/ButtonsBloc.vue";
 
 const props = defineProps({
   isLayerOpened: Boolean,
@@ -34,7 +35,7 @@ const setNpcLocation = (value: string) => {
 };
 
 const saveNpc = () => {
-  emit("update:npc", props.npc)
+  emit("update:npc", props.npc);
 };
 
 watch(
@@ -52,30 +53,36 @@ watch(
     temporary
     location="right"
   >
-    <v-container fluid>
+    <v-container v-if="drawerOpen" fluid>
       <v-row>
         <v-col>
           <v-card-title>{{ npc.name }}</v-card-title>
           <v-card-text>
-            <NpcInfoField label="Title" @update:value="setNpcTitle" />
-            <NpcInfoField label="Location" @update:value="setNpcLocation" />
+            <NpcInfoField
+              label="Title"
+              :value="npc.title"
+              @update:value="setNpcTitle"
+            />
+            <NpcInfoField
+              label="Location"
+              :value="npc.location"
+              @update:value="setNpcLocation"
+            />
             <NpcInfoField
               label="Description"
-              v-model="npc.description"
+              :value="npc.description"
               @update:value="setNpcDescription"
               textArea
             />
           </v-card-text>
-          <v-btn color="primary" variant="outlined" @click="closeLayer"
-            >Close</v-btn
-          >
-          <v-btn color="primary" @click="saveNpc">Save</v-btn>
+          <buttons-bloc
+            left-button-text="Close"
+            right-button-text="Save"
+            @left-click="closeLayer"
+            @right-click="saveNpc"
+          />
         </v-col>
       </v-row>
     </v-container>
   </v-navigation-drawer>
 </template>
-
-<style scoped>
-/* Ajoute tes styles ici si nécessaire */
-</style>

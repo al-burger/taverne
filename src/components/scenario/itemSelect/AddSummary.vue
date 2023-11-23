@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useScenarioStore } from "@/store/modules/scenario";
+import ButtonsBloc from "@/components/common/ButtonsBloc.vue";
 
 const scenarioStore = useScenarioStore();
 const description = ref<string>("");
@@ -31,5 +32,12 @@ onMounted(() => {
     ></v-textarea>
     <v-btn color="primary" variant="outlined" @click="cancelEditing" class="mr-4">Cancel</v-btn>
     <v-btn color="primary" @click="addSummary">Add</v-btn>
+    
+    <buttons-bloc
+            left-button-text="Cancel"
+            right-button-text="Add"
+            @left-click="cancelEditing"
+            @right-click="addSummary"
+          />
   </div>
 </template>
